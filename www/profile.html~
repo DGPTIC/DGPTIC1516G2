@@ -1,0 +1,32 @@
+ <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">Perfil</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Volver</button>
+        </ion-header-bar>
+         <ion-content header-shrink scroll-event-interval="5">
+        <div class="list card">
+
+          <div class="item item-avatar">
+            <img src="http://ionicframework.com/img/docs/mcfly.jpg">
+            <h2>Marty McFly</h2>
+          </div>
+<ion-list>
+  <ion-item>
+<button class="button" ng-click="data.showDelete = false; data.showReorder = !data.showReorder">
+            Reorder
+        </button>
+    Helloworld!
+  </ion-item>
+<ion-item>
+    Helloworld!
+  </ion-item>
+<ion-item>
+    Helloworld!
+  </ion-item>
+</ion-list>
+	<div>
+      
+</div>
+        </div>
+      </ion-content>
+      </ion-modal-view>
