@@ -1,5 +1,6 @@
 var map;
 
+function loadMap () {
 require([
   "esri/map",
   "esri/tasks/GeometryService",
@@ -33,7 +34,6 @@ require([
   BorderContainer, ContentPane
 ) {
   ready(function () {
-    console.log('ready');
     parser.parse();
 
     // snapping is enabled for this sample - change the tooltip to reflect this
@@ -61,10 +61,9 @@ require([
               arrayUtils, parser, keys, ready,
               BorderContainer, ContentPane, evt);
     });
-
-    console.log('new map');
   });
 });
+}
 
 function initMap (
   Map, GeometryService, LocateButton, Search,
@@ -75,8 +74,6 @@ function initMap (
   arrayUtils, parser, keys, ready,
   BorderContainer, ContentPane, evt
 ) {
-  console.log('init map');
-
   // add search box and locate button
   var s = new Search({
     map: map
@@ -97,8 +94,6 @@ function initMap (
 
     outFields: ['*']
   });
-
-  console.log('added stuff');
 
   map.addLayers([responsePoints]);
   map.on("layers-add-result", function (evt) {
@@ -121,7 +116,6 @@ function initEditor (
   arrayUtils, parser, keys, ready,
   BorderContainer, ContentPane, evt
 ) {
-  console.log('editor init');
   var templateLayers = arrayUtils.map(evt.layers, function(result){
     return result.layer;
   });
