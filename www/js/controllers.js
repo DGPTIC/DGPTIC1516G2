@@ -1,28 +1,52 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
+  $scope.initialize = function () {
+    $ionicSideMenuDelegate.canDragContent(false);
+  }
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
+  $scope.toggleLeft = function () {
+    $ionicSideMenuDelegate.toggleLeft();
   };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('MapController', function ($scope, $ionicModal, $state) {
+  // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
+  loadMap();
+
+  // Creación del popup que pide que el usuario inicie sesión
+  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.addNotification = function () {
+    var loggedIn = false;
+    if (loggedIn) {
+      $state.go('add.kind');
+    }
+    else {
+      $scope.modal.show();
+    }
+  };
+
+  $scope.closeModal = function () {
+    $scope.modal.hide();
+  };
+
+  $scope.$on('$destroy', function () {
+    $scope.modal.remove();
+  });
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('ProfileController', function ($scope) {
+  // TODO: Añadir a $scope todos los datos del usuario actual (si inició sesión)
+  // Dependiendo de esta variable se muestra la pantalla de inicio de sesión o el perfil
+  $scope.loggedIn = false;
+})
+
+.controller('AddController', function ($scope) {
+  // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
 });

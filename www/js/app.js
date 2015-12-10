@@ -31,55 +31,67 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
+  .state('splash', {
+    url: '/splash',
+    templateUrl: 'templates/splash.html'
+  })
+
+  .state('map', {
+    url: '/map',
+    templateUrl: 'templates/map.html',
+    controller: 'MapController'
+  })
+
+  .state('profile', {
+    url: '/profile',
+    templateUrl: 'templates/profile.html',
+    controller: 'ProfileController'
+  })
+
+  .state('add', {
+    url: '/add',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/add.html',
+    controller: 'AddController'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.dash', {
-    url: '/dash',
+  .state('add.kind', {
+    url: '/kind',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'content': {
+        templateUrl: 'templates/add-kind.html'
       }
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
+  .state('add.map', {
+    url: '/map',
     views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      'content': {
+        templateUrl: 'templates/add-map.html'
       }
     }
-  });
+  })
+
+  .state('add.complaint', {
+    url: '/complaint',
+    views: {
+      'content': {
+        templateUrl: 'templates/add-complaint.html'
+      }
+    }
+  })
+
+  .state('add.congratulation', {
+    url: '/congrat',
+    views: {
+      'content': {
+        templateUrl: 'templates/add-congrat.html'
+      }
+    }
+  })
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/splash');
 
 });

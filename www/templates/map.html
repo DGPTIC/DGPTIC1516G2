@@ -1,0 +1,46 @@
+<ion-view hide-nav-bar="true">
+  <ion-side-menus >
+
+    <!-- Menú lateral -->
+    <ion-side-menu expose-aside-when="min-width:1px">
+      <ion-header-bar class="bar-royal">
+        <h1 class="title">Filtros</h1>
+      </ion-header-bar>
+
+      <ion-content>
+        <ul class="list">
+          <li class="item item-checkbox">
+           <label class="checkbox"><input type="checkbox"></label>
+           Público
+          </li>
+          <li class="item item-checkbox">
+           <label class="checkbox"><input type="checkbox"></label>
+           Privado
+          </li>
+        </ul>
+      </ion-content>
+    </ion-side-menu>
+
+    <ion-side-menu-content>
+      <!-- Título -->
+      <ion-header-bar class="bar-positive">
+        <div class="buttons">
+          <button class="button  button-icon ion-navicon" ng-controller="SidemenuController" ng-init="initialize()" ng-click="toggleLeft()" ></button>
+        </div>
+        <h1 class="title">Accesibilidad de La Palma</h1>
+        <div class="buttons">
+          <button class="button button-icon ion-person" ui-sref="profile"></button>
+        </div>
+      </ion-header-bar>
+
+      <!-- Contenido -->
+      <ion-content>
+        <div id="map" class="map" data-tap-disabled="true">
+          <div id="Search"></div>
+          <div id="LocateButton"></div>
+          <div><a id="AddButton" class="button ion-android-add button-large button-positive" ng-click="addNotification()"></a></div>
+        </div>
+      </ion-content>
+    </ion-side-menu-content>
+  </ion-side-menus>
+</ion-view>
