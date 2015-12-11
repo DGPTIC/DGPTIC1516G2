@@ -8,16 +8,49 @@
       </ion-header-bar>
 
       <ion-content>
-        <ul class="list">
-          <li class="item item-checkbox">
-           <label class="checkbox"><input type="checkbox"></label>
-           Público
-          </li>
-          <li class="item item-checkbox">
-           <label class="checkbox"><input type="checkbox"></label>
-           Privado
-          </li>
-        </ul>
+
+<form name="myForm">
+  <li class="item item-checkbox">
+
+    <input type="checkbox" ng-model="checkboxModel.value1" id="excelcheck" onclick="filter()">
+    Excelente
+ 
+  </li>
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value2" id="mbcheck" onclick="filter()">
+    Muy bueno
+  </li>
+
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value3" id="bcheck" onclick="filter()">
+    Bueno
+  </li>
+
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value4" id="rcheck" onclick="filter()">
+    Regular
+  </li>
+
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value5" id="mcheck" onclick="filter()">
+    Malo
+  </li>
+
+   
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value6" id="mmcheck" onclick="filter()">
+    Muy malo
+  </li>
+
+   
+  <li class="item item-checkbox">
+    <input type="checkbox" ng-model="checkboxModel.value7" id="pcheck" onclick="filter()">
+    Pésimo
+  </li>
+
+
+ </form>
+
       </ion-content>
     </ion-side-menu>
 
