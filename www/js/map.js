@@ -1,6 +1,6 @@
 var map;
  var responsePoints;
- 
+
 function loadMap () {
 require([
   "esri/map",
@@ -173,60 +173,3 @@ function initEditor (
 
   myEditor.startup();
 }
-function filter() {
-   var selected = "";
-   var excel = document.getElementById('excelcheck').checked;
-    if (excel == true){
-	 selected += "Valoración = '3' ";
-	}
-    var mb = document.getElementById('mbcheck').checked;
-    if (mb == true){
-	 if (selected != "")
-		selected += "OR Valoración = '2' ";
-	 else
-		selected += "Valoración = '2' ";
-	}
-	var b = document.getElementById('bcheck').checked;
-    if (b == true){
-	 if (selected != "")
-		selected += "OR Valoración = '1' ";
-	 else
-		selected += "Valoración = '1' ";
-	}
-	
-	var r = document.getElementById('rcheck').checked;
-    if (r == true){
-	 if (selected != "")
-		selected += "OR Valoración = '0' ";
-	 else
-		selected += "Valoración = '0' ";
-	}
-	
-	var m = document.getElementById('mcheck').checked;
-    if (m == true){
-	 if (selected != "")
-		selected += "OR Valoración = '-1' ";
-	 else
-		selected += "Valoración = '-1' ";
-	}
-	
-	var mm = document.getElementById('mmcheck').checked;
-    if (mm == true){
-	 if (selected != "")
-		selected += "OR Valoración = '-2' ";
-	 else
-		selected += "Valoración = '-2' ";
-	}
-
-	var p = document.getElementById('pcheck').checked;
-    if (p == true){
-	 if (selected != "")
-		selected += "OR Valoración = '-3' ";
-	 else
-		selected += "Valoración = '-3' ";
-	}
-
-	responsePoints.setDefinitionExpression(selected);
-	map.addLayers([responsePoints]);
-    map.setExtent(map.extent);
-	}
