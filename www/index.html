@@ -43,40 +43,23 @@
       <!-- Menú lateral con filtros, etc que se carga sólo en la vista de mapas -->
       <ion-side-menu side="left" expose-aside-when="min-width:1px">
         <ion-header-bar class="bar-royal">
-          <h1 class="title">Filtros</h1>
+          <h1 class="title">Menú</h1>
         </ion-header-bar>
 
-        <ion-content>
-          <form name="myForm">
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value1" id="excelcheck" onclick="filter()">
-              Excelente
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value2" id="mbcheck" onclick="filter()">
-              Muy bueno
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value3" id="bcheck" onclick="filter()">
-              Bueno
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value4" id="rcheck" onclick="filter()">
-              Regular
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value5" id="mcheck" onclick="filter()">
-              Malo
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value6" id="mmcheck" onclick="filter()">
-              Muy malo
-            </li>
-            <li class="item item-checkbox">
-              <input type="checkbox" ng-model="checkboxModel.value7" id="pcheck" onclick="filter()">
-              Pésimo
-            </li>
-           </form>
+        <ion-content ng-controller="MenuController">
+          <div class="item item-divider">
+            Filtros
+          </div>
+          <ion-toggle ng-model="excelCheck" ng-change="filter()" toggle-class="toggle-balanced">Excelente</ion-toggle>
+          <ion-toggle ng-model="mbCheck" ng-change="filter()" toggle-class="toggle-balanced">Muy bueno</ion-toggle>
+          <ion-toggle ng-model="bCheck" ng-change="filter()" toggle-class="toggle-balanced">Bueno</ion-toggle>
+          <ion-toggle ng-model="rCheck" ng-change="filter()" toggle-class="toggle-balanced">Regular</ion-toggle>
+          <ion-toggle ng-model="mCheck" ng-change="filter()" toggle-class="toggle-balanced">Malo</ion-toggle>
+          <ion-toggle ng-model="mmCheck" ng-change="filter()" toggle-class="toggle-balanced">Muy malo</ion-toggle>
+          <ion-toggle ng-model="pCheck" ng-change="filter()" toggle-class="toggle-balanced">Pésimo</ion-toggle>
+          <div class="item item-divider">
+            Acciones
+          </div>
         </ion-content>
       </ion-side-menu>
 
