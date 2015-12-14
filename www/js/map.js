@@ -130,7 +130,7 @@ function initEditor (
   templatePicker.startup();
 
   var layers = arrayUtils.map(evt.layers, function(result) {
-    return { featureLayer: result.layer };
+    return { featureLayer: result.layer, isEditable: false};
   });
 
   var settings = {
