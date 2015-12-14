@@ -1,79 +1,16 @@
-<ion-view hide-nav-bar="true">
-  <ion-side-menus >
+<ion-view title="Accesibilidad de La Palma" hide-back-button="true">
+  <ion-nav-buttons side="left">
+    <button class="button button-icon ion-navicon" ng-controller="SidemenuController" ng-init="initialize()" menu-toggle="left"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon ion-person" ui-sref="profile"></button>
+  </ion-nav-buttons>
 
-    <!-- Menú lateral -->
-    <ion-side-menu expose-aside-when="min-width:1px">
-      <ion-header-bar class="bar-royal">
-        <h1 class="title">Filtros</h1>
-      </ion-header-bar>
-
-      <ion-content>
-
-<form name="myForm">
-  <li class="item item-checkbox">
-
-    <input type="checkbox" ng-model="checkboxModel.value1" id="excelcheck" onclick="filter()">
-    Excelente
- 
-  </li>
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value2" id="mbcheck" onclick="filter()">
-    Muy bueno
-  </li>
-
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value3" id="bcheck" onclick="filter()">
-    Bueno
-  </li>
-
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value4" id="rcheck" onclick="filter()">
-    Regular
-  </li>
-
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value5" id="mcheck" onclick="filter()">
-    Malo
-  </li>
-
-   
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value6" id="mmcheck" onclick="filter()">
-    Muy malo
-  </li>
-
-   
-  <li class="item item-checkbox">
-    <input type="checkbox" ng-model="checkboxModel.value7" id="pcheck" onclick="filter()">
-    Pésimo
-  </li>
-
-
- </form>
-
-      </ion-content>
-    </ion-side-menu>
-
-    <ion-side-menu-content>
-      <!-- Título -->
-      <ion-header-bar class="bar-positive">
-        <div class="buttons">
-          <button class="button  button-icon ion-navicon" ng-controller="SidemenuController" ng-init="initialize()" ng-click="toggleLeft()" ></button>
-        </div>
-        <h1 class="title">Accesibilidad de La Palma</h1>
-        <div class="buttons">
-          <button class="button button-icon ion-person" ui-sref="profile"></button>
-        </div>
-      </ion-header-bar>
-
-      <!-- Contenido -->
-      <ion-content>
-        <div id="map" class="map" data-tap-disabled="true">
-          <div id="Search"></div>
-          <div id="LocateButton"></div>
-          <div><a id="AddButton" class="button ion-android-add button-large button-positive" ng-click="addNotification()"></a></div>
-        </div>
-      </ion-content>
-    </ion-side-menu-content>
-  </ion-side-menus>
+  <ion-content>
+    <div id="map" class="map" data-tap-disabled="true">
+      <div id="Search"></div>
+      <div id="LocateButton"></div>
+      <div><a id="AddButton" class="button ion-android-add button-large button-positive" ng-click="addNotification()"></a></div>
+    </div>
+  </ion-content>
 </ion-view>

@@ -23,9 +23,9 @@ angular.module('starter.controllers', [])
   });
 
   $scope.addNotification = function () {
-    var loggedIn = false;
+    var loggedIn = true;
     if (loggedIn) {
-      $state.go('add.kind');
+      $state.go('add.map');
     }
     else {
       $scope.modal.show();

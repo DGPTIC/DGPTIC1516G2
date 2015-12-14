@@ -55,15 +55,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     controller: 'AddController'
   })
 
-  .state('add.kind', {
-    url: '/kind',
-    views: {
-      'content': {
-        templateUrl: 'templates/add-kind.html'
-      }
-    }
-  })
-
   .state('add.map', {
     url: '/map',
     views: {
@@ -73,20 +64,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('add.complaint', {
-    url: '/complaint',
+  .state('add.form', {
+    url: '/form',
     views: {
       'content': {
-        templateUrl: 'templates/add-complaint.html'
-      }
-    }
-  })
-
-  .state('add.congratulation', {
-    url: '/congrat',
-    views: {
-      'content': {
-        templateUrl: 'templates/add-congrat.html'
+        templateUrl: 'templates/add-form.html'
       }
     }
   })
