@@ -1,0 +1,58 @@
+function cargarFormulario() {
+ // document.getElementById("ui-content-formulario").innerHTML = attInspector.domNode.innerHTML;
+  console.log("cargarFormulario");
+  document.getElementById("ui-content-formulario2").innerHTML = document.getElementById("ui-content-formulario").innerHTML;
+  document.getElementById("ui-content-formulario").remove();
+
+}
+
+  // ----------------------------------------------------
+   // Returns the Feature Template given the Coded Value
+   // ----------------------------------------------------
+   function getFeatureTemplateFromCodedValueByName() {
+     var returnType = null;
+     $.each(appGlobals.citizenRequestLayer.types, function(index, type) {
+
+       returnType = type.templates[0];
+
+     });
+     return returnType;
+   }
+
+   function getAtributos() {
+     require([
+       "dojo/_base/lang"
+     ], function(lang) {
+       var citizenRequestFeatureTemplate = getFeatureTemplateFromCodedValueByName();
+       appGlobals.collectMode = false;
+       newAttributesG = lang.mixin({}, citizenRequestFeatureTemplate.prototype.attributes);
+       newAttributesG.Valoración = valoresValoracion[document.getElementById("selectvaloracion").value];
+       newAttributesG.Temática = document.getElementById("selecttematica").value;
+       newAttributesG.Organismo = document.getElementById("selectorganismo").value;
+       newAttributesG.Descripción = document.getElementById("descripcion").value;
+       newAttributesG.Nombre_Organismo = document.getElementById("nombre_organismo").value;
+     });
+   }
+
+
+   function post() {
+     require([
+       "esri/graphic"
+     ], function(Graphic) {
+
+       var currentDate = new Date();
+       var incidentAttributes = {
+         OBJECTID: 18,
+         Fecha_creación: (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear(),
+         Fecha_actualización: (currentDate.getMonth() + 1) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear(),
+         Organismo: newAttributesG.Organismo,
+         Valoración: newAttributesG.Valoración,
+         Descripción: newAttributesG.Descripción,
+         Temática: newAttributesG.Temática,
+         Nombre_Organismo: newAttributesG.Nombre_Organismo
+       };
+       var incidentGraphic = new Graphic(appGlobals.lastMapPoint, null, incidentAttributes);
+       appGlobals.citizenRequestLayer.applyEdits([incidentGraphic], null, null);
+       appGlobals.lastMapPoint = null;
+     });
+   }

@@ -1,3 +1,13 @@
+var newAttributesG;
+var valoresValoracion = {};
+valoresValoracion['Excelente'] = 3;
+valoresValoracion['Muy bueno'] = 2;
+valoresValoracion['Bueno'] = 1;
+valoresValoracion['Regular'] = 0;
+valoresValoracion['Malo'] = -1;
+valoresValoracion['Muy malo'] = -2;
+valoresValoracion['Pésimo'] = -3;
+
 angular.module('starter.controllers', [])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
@@ -42,7 +52,7 @@ angular.module('starter.controllers', [])
 .controller('MapController', function ($scope, $state, $ionicModal) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
-
+  
   // Creación del popup que pide que el usuario inicie sesión
   $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope,
@@ -76,11 +86,22 @@ angular.module('starter.controllers', [])
   $scope.loggedIn = false;
 })
 
-.controller('AddController', function ($scope, $state, $ionicHistory) {
+.controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
+ 
+ var ext = "2";
+    loadMapAnadir(ext);
+  $scope.init = function () {
+
+    
+  };
+
   $scope.postForm = function () {
     // TODO Enviar todos los datos del formulario y la posición seleccionada en el mapa al servidor
     // TODO Posiblemente mostrar un popup cuando el envío haya terminado para avisar al usuario
+    getAtributos();
+    post();
+    $scope.mostrarIncidenciaEnviada();
 
     // Deshabilitar el volver atrás y cambiar a la pantalla principal
     $ionicHistory.nextViewOptions({
@@ -90,5 +111,35 @@ angular.module('starter.controllers', [])
 
     $state.go('map');
   };
+    
+
+
+
+   $scope.goFormulario = function () {
+      if(appGlobals.hayMapPoint == false)
+        $scope.showAlert();
+      else {
+        $state.go('add.form');
+         appGlobals.hayMapPoint = false;
+      }
+   }
+
+   $scope.initFormulario = function () {
+      cargarFormulario();
+    }
+
+    $scope.showAlert = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Selecciona una ubicación!',
+       template: 'No has seleccionado una ubicación, por favor, pincha sobre el lugar de la incidendcia'
+     });
+   };
+
+   $scope.mostrarIncidenciaEnviada = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Incidendcia enviada!',
+       template: 'Intentaremos solucionarla lo antes posible'
+     });
+   };
 
 });

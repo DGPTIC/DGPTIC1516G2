@@ -7,6 +7,7 @@ require([
   "esri/tasks/GeometryService",
   "esri/dijit/LocateButton",
   "esri/dijit/Search",
+  "esri/dijit/Geocoder",
   "esri/layers/ArcGISTiledMapServiceLayer",
   "esri/layers/FeatureLayer",
 
@@ -26,7 +27,7 @@ require([
   "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
   "dojo/domReady!"
 ], function (
-  Map, GeometryService, LocateButton, Search,
+  Map, GeometryService, LocateButton, Search, Geocoder,
   ArcGISTiledMapServiceLayer, FeatureLayer,
   Color, SimpleMarkerSymbol, SimpleLineSymbol,
   Editor, TemplatePicker,
@@ -54,7 +55,7 @@ require([
     });
 
     map.on("load", function (evt) {
-      initMap(Map, GeometryService, LocateButton, Search,
+      initMap(Map, GeometryService, LocateButton, Search, Geocoder,
               ArcGISTiledMapServiceLayer, FeatureLayer,
               Color, SimpleMarkerSymbol, SimpleLineSymbol,
               Editor, TemplatePicker,
@@ -67,7 +68,7 @@ require([
 }
 
 function initMap (
-  Map, GeometryService, LocateButton, Search,
+  Map, GeometryService, LocateButton, Search, Geocoder,
   ArcGISTiledMapServiceLayer, FeatureLayer,
   Color, SimpleMarkerSymbol, SimpleLineSymbol,
   Editor, TemplatePicker,
@@ -75,12 +76,14 @@ function initMap (
   arrayUtils, parser, keys, ready,
   BorderContainer, ContentPane, evt
 ) {
-  // add search box and locate button
-  var s = new Search({
-    map: map
-  }, "Search");
-  s.startup();
-
+  
+  var geocoder = new Geocoder({
+            arcgisGeocoder: {
+              placeholder: "Search "
+            },
+            map: map
+          }, "Search");
+          geocoder.startup();
   var geoLocate = new LocateButton({
     map: map
   }, "LocateButton");
