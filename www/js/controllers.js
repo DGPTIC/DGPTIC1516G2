@@ -8,6 +8,7 @@ valoresValoracion['Malo'] = -1;
 valoresValoracion['Muy malo'] = -2;
 valoresValoracion['Pésimo'] = -3;
 
+var loggedIn = false;
 angular.module('starter.controllers', [])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
@@ -49,7 +50,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('MapController', function ($scope, $state, $ionicModal) {
+.controller('MapController', function ($scope, $state, $ionicModal, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
   
@@ -60,14 +61,42 @@ angular.module('starter.controllers', [])
   }).then(function(modal) {
     $scope.modal = modal;
   });
-
+     $scope.goProfile = function () {
+	  if(!loggedIn){
+		$scope.showLoginAlert();
+	  }
+	  else{
+		  $state.go('profile');
+	  }
+   }
+	
+	$scope.showLoginAlert = function() {
+     var alertPopup = $ionicPopup.show({
+       title: 'Autenticación necesaria',
+       template: 'No has accedido a través de tus redes sociales',
+       scope: $scope,
+       buttons: [
+       {text: 'Cancelar' },
+       {text: 'Login', type: 'button-positive', onTap: function(){$scope.LoginOk();}}
+      ] 
+     });
+   };
+   
+   $scope.LoginOk = function() {
+	  var alertPopup = $ionicPopup.alert({
+	   title: 'Autenticación correcta',
+       template: 'La autenticación mediante redes sociales se ha realizado correctamente'
+     });
+     loggedIn=true;
+   };
+	   
   $scope.addNotification = function () {
-    var loggedIn = true;
+
     if (loggedIn) {
       $state.go('add.map');
     }
     else {
-      $scope.modal.show();
+      $scope.showLoginAlert();
     }
   };
 
@@ -80,11 +109,16 @@ angular.module('starter.controllers', [])
   });
 })
 
+
 .controller('ProfileController', function ($scope) {
   // TODO: Añadir a $scope todos los datos del usuario actual (si inició sesión)
   // Dependiendo de esta variable se muestra la pantalla de inicio de sesión o el perfil
   $scope.loggedIn = false;
+ 
 })
+
+
+
 
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
@@ -112,9 +146,6 @@ angular.module('starter.controllers', [])
     $state.go('map');
   };
     
-
-
-
    $scope.goFormulario = function () {
       if(appGlobals.hayMapPoint == false)
         $scope.showAlert();
