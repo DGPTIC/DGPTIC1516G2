@@ -30,6 +30,7 @@ function loadMap() {
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
     "dojo/dom-class",
     "dojo/dom-construct",
+    "dojo/_base/connect",
     "dojo/domReady!"
 
   ], function(
@@ -40,7 +41,7 @@ function loadMap() {
     SimpleFillSymbol, Color,
     esriConfig, arcgisUtils, jsapiBundle,
     arrayUtils, parser, keys, ready,
-    BorderContainer, ContentPane, domClass, domConstruct
+    BorderContainer, ContentPane, domClass, domConstruct, connect
   ) {
     ready(function() {
       parser.parse();
@@ -54,17 +55,17 @@ function loadMap() {
       //This service is for development and testing purposes only. We recommend that you create your own geometry service for use within your applications.
       esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
       var fill = new SimpleFillSymbol("solid", null, new Color("#A4CE67"));
-      popup = new PopupMobile({}, domConstruct.create("div"));
-      popup.hide();
-      for (bar in popup)
-        console.log(bar);
+      
+    
       map = new Map("map", {
         basemap: "streets",
         center: [-17.858908, 28.683404],
         zoom: 11,
-        infoWindow: popup,
         slider: false
       });
+      map.setInfoWindowOnClick(false);
+      map.showInfoWindowOnClick = false;
+      map.usePopupManager = true;
 
       map.on("load", function(evt) {
         initMap(Map, GeometryService, LocateButton, Search, Geocoder,
@@ -73,7 +74,7 @@ function loadMap() {
           Editor, TemplatePicker, InfoTemplate,
           esriConfig, arcgisUtils, jsapiBundle,
           arrayUtils, parser, keys, ready,
-          BorderContainer, ContentPane, evt);
+          BorderContainer, ContentPane, connect, evt);
       });
     });
   });
@@ -86,7 +87,7 @@ function initMap(
   Editor, TemplatePicker, InfoTemplate,
   esriConfig, arcgisUtils, jsapiBundle,
   arrayUtils, parser, keys, ready,
-  BorderContainer, ContentPane, evt
+  BorderContainer, ContentPane, connect, evt
 ) {
 
   var geocoder = new Geocoder({
@@ -99,51 +100,35 @@ function initMap(
   var geoLocate = new LocateButton({
     map: map
   }, "LocateButton");
+
   geoLocate.startup();
 
   //add boundaries and place names
   var labels = new ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer");
   map.addLayer(labels);
 
-  var featureLayerInfoTemplate = new InfoTemplate();
-  featureLayerInfoTemplate.setTitle("<b>Request ${objectid:formatRequestID}</b>");
-  var infoTemplateContent = "<span class=\"infoTemplateContentRowLabel\">Type:</span><span class=\"infoTemplateContentRowItem\">${Valoración}</span>";
-  featureLayerInfoTemplate.setContent(infoTemplateContent);
-
-
 
   responsePoints = new FeatureLayer("https://services.arcgis.com/hkQNLKNeDVYBjvFE/ArcGIS/rest/services/Accesibilidad/FeatureServer/0", {
     mode: FeatureLayer.MODE_ONDEMAND,
-    infoTemplate: featureLayerInfoTemplate,
     outFields: ['*']
   });
 
   dojo.connect(responsePoints, "onClick", function(evt) {
 
-    popup.destroy();
     graphicAttributes = evt.graphic.attributes;
-
-    var objectId;
-    objectId = event.graphic.attributes[responsePoints.objectIdField];
+    
+    var objectId = graphicAttributes.OBJECTID;
     responsePoints.queryAttachmentInfos(objectId, function(infos) {
+
       angular.element(document.getElementById('map')).scope().cargarImagenesIncidencia(infos);
 
     });
-
     angular.element(document.getElementById('map')).scope().cargarIncidencia(graphicAttributes);
-
+    
   });
 
   map.addLayers([responsePoints]);
-  map.on("layers-add-result", function(evt) {
-    initEditor(Map, GeometryService, LocateButton, Search,
-      ArcGISTiledMapServiceLayer, FeatureLayer,
-      Color, SimpleMarkerSymbol, SimpleLineSymbol,
-      Editor, TemplatePicker,
-      esriConfig, arcgisUtils, jsapiBundle,
-      arrayUtils, parser, keys, ready,
-      BorderContainer, ContentPane, evt);
-  });
+  
 }
 
 function initEditor(
