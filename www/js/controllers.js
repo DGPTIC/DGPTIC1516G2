@@ -1,5 +1,6 @@
 var newAttributesG;
 var valoresValoracion = {};
+var datosIncidencia;
 valoresValoracion['Excelente'] = 3;
 valoresValoracion['Muy bueno'] = 2;
 valoresValoracion['Bueno'] = 1;
@@ -107,6 +108,25 @@ angular.module('starter.controllers', [])
   $scope.$on('$destroy', function () {
     $scope.modal.remove();
   });
+
+  $scope.cargarIncidencia = function(content) {
+    datosIncidencia = content;
+  }
+
+  $scope.cargarImagenesIncidencia = function(imagenes) {
+    imagenesG = imagenes;
+    $state.go('incidencia');
+  }
+  $scope.iniciar = function() {
+    console.log(imagenesG);
+    $scope.images = [];
+    for (i = 0; i < imagenesG.length; i++)
+      $scope.images.push(imagenesG[i].url);
+  }
+
+  $scope.initIncidencia = function(content) {
+    cargarIncidencia();
+  }
 })
 
 
@@ -123,8 +143,8 @@ angular.module('starter.controllers', [])
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
  
- var ext = "2";
-    loadMapAnadir(ext);
+  var ext = "2";
+  loadMapAnadir(ext);
   $scope.init = function () {
 
     

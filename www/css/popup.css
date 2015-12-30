@@ -1,0 +1,21 @@
+ .esriPopup.dark div.titleButton, 
+      .esriPopup.dark div.titlePane .title,
+      .esriPopup.dark div.actionsPane .action {
+        color: #000000;
+      }
+      /* Additional customizations */
+      .esriPopup.dark .esriPopupWrapper {
+        border: none;
+      }
+      .esriPopup .contentPane {
+        text-align: center;
+      }
+      .esriViewPopup .gallery {
+        margin: 0 auto;
+      }
+ .esriPopup {
+position: absolute
+left: 50%;
+ top: 50%;
+
+}

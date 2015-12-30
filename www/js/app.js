@@ -48,6 +48,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     controller: 'ProfileController'
   })
 
+  .state('incidencia', {
+    url: '/incidencia',
+    templateUrl: 'templates/incidencia.html',
+    controller: 'MapController'
+  })
+
   .state('add', {
     url: '/add',
     abstract: true,

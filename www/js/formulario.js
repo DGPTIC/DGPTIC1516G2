@@ -1,6 +1,15 @@
+function cargarIncidencia() {
+  
+  document.getElementById("valoracion-incidencia").value = datosIncidencia.Valoración;
+  document.getElementById("descripcion-incidencia").value = datosIncidencia.Descripción;
+  document.getElementById("tematica-incidencia").value = datosIncidencia.Temática;
+  document.getElementById("organismo-incidencia").value = datosIncidencia.Organismo;
+  document.getElementById("nombreOrganismo-incidencia").value = datosIncidencia.Nombre_Organismo;
+  
+}
+
 function cargarFormulario() {
- // document.getElementById("ui-content-formulario").innerHTML = attInspector.domNode.innerHTML;
-  console.log("cargarFormulario");
+ 
   document.getElementById("ui-content-formulario2").innerHTML = document.getElementById("ui-content-formulario").innerHTML;
   document.getElementById("ui-content-formulario").remove();
 

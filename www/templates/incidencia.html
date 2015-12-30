@@ -1,0 +1,52 @@
+<div>
+   <ion-view class="padding" view-title="Incidencia">
+   </ion-view>
+   <ion-view >
+      <!-- Header -->
+      <!-- Content -->
+      <ion-content class="padding">
+         <div id="ui-content-incidencia" ng-init="initIncidencia()">
+         <div class="list">
+            <div class="item item-input-inset">
+               <div class="input-label"> Valoración </div>
+               <label class=\"item-input-wrapper\">
+               <input id="valoracion-incidencia" readonly type="text" placeholder="No se introdujo">
+               </label>
+            </div>
+            <div class="item item-input-inset">
+               <div class="input-label"> Descripción </div>
+               <label class=\"item-input-wrapper\">
+               <input id="descripcion-incidencia" readonly type="text" placeholder="No se introdujo">
+               </label>
+            </div>
+            <div class="item item-input-inset">
+               <div class="input-label"> Temática </div>
+               <label class=\"item-input-wrapper\">
+               <input id="tematica-incidencia" readonly type="text" placeholder="No se introdujo">
+               </label>
+            </div>
+            <div class="item item-input-inset">
+               <div class="input-label"> Organismo </div>
+               <label class=\"item-input-wrapper\">
+               <input id="organismo-incidencia" readonly type="text" placeholder="No se introdujo">
+               </label>
+            </div>
+            <div class="item item-input-inset">
+               <div class="input-label"> Nombre Org. </div>
+               <label class=\"item-input-wrapper\">
+               <input id="nombreOrganismo-incidencia" readonly type="text" placeholder="No se introdujo">
+               </label>
+            </div>
+            <div data-ng-app="" data-ng-init="iniciar()"/>
+               <div class="input-label"> </div>
+               <div class="input-label"> Imágenes </div>
+               <ion-slide-box on-slide-changed="slideHasChanged($index)">
+               <ion-slide ng-repeat="slide in images" >
+                  <div>
+                     <img class="full-image" ng-src="{{slide}}">
+                  </div>
+               </ion-slide>
+            </div>
+      </ion-content>
+   </ion-view>
+</div>
