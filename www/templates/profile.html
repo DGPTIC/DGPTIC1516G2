@@ -1,18 +1,14 @@
-<div>
+<ion-view view-title="Perfil">
+    <ion-content>
+        <div class="list card">
+            
+            <div class="item item-body">
+                <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
+            </div>
+        </div>
+        <div class="item" align="center">
+                <h2>{{user.name}}</h2>
 
-  <ion-view title="Perfil" ng-hide="loggedIn">
-    <!-- Header -->
-
-    <!-- Content -->
- <ion-content has-header="true">
-
-      <br><div id="profile-bg"></div>
-      <br><div id="content">
-       <br><div id="profile-info">
-        <br><img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
-          <h3 id="profile-name">Max</h3>
-          <span id="profile-description">Accediendo a través de <a href="http://twitter.com/ionicframework">Twitter</a></span>
-      
+            </div>
     </ion-content>
-  </ion-view>
-</div>
+</ion-view>

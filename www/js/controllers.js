@@ -10,7 +10,7 @@ valoresValoracion['Muy malo'] = -2;
 valoresValoracion['Pésimo'] = -3;
 
 var loggedIn = false;
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
   $scope.initialize = function () {
@@ -21,6 +21,7 @@ angular.module('starter.controllers', [])
     $ionicSideMenuDelegate.toggleLeft();
   };
 })
+
 
 .controller('MenuController', function ($scope) {
   $scope.filter = function () {
@@ -51,7 +52,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('MapController', function ($scope, $state, $ionicModal, $ionicPopup) {
+.controller('MapController', function ($scope, $state, $ionicModal, $ionicPopup, ngFB) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
   
@@ -78,19 +79,26 @@ angular.module('starter.controllers', [])
        scope: $scope,
        buttons: [
        {text: 'Cancelar' },
-       {text: 'Login', type: 'button-positive', onTap: function(){$scope.LoginOk();}}
+       {text: 'Login', type: 'button-positive', onTap: function(){$scope.fbLogin();}}
       ] 
      });
    };
    
-   $scope.LoginOk = function() {
-	  var alertPopup = $ionicPopup.alert({
-	   title: 'Autenticación correcta',
-       template: 'La autenticación mediante redes sociales se ha realizado correctamente'
-     });
-     loggedIn=true;
-   };
-	   
+   $scope.fbLogin = function () {
+    ngFB.login({scope: 'email,publish_actions'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+				  loggedIn=true;
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+                 
+            } else {
+                alert('Facebook login failed');
+                   loggedIn=false;
+            }
+        });
+};
+
   $scope.addNotification = function () {
 
     if (loggedIn) {
@@ -130,15 +138,21 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('ProfileController', function ($scope) {
+.controller('ProfileController', function ($scope, ngFB) {
   // TODO: Añadir a $scope todos los datos del usuario actual (si inició sesión)
   // Dependiendo de esta variable se muestra la pantalla de inicio de sesión o el perfil
-  $scope.loggedIn = false;
- 
+  $scope.loggedIn = true;
+  ngFB.api({
+        path: '/me',
+        params: {fields: 'id,name'}
+    }).then(
+        function (user) {
+            $scope.user = user;
+        },
+        function (error) {
+            alert('Facebook error: ' + error.error_description);
+        });
 })
-
-
-
 
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
@@ -194,3 +208,5 @@ angular.module('starter.controllers', [])
    };
 
 });
+
+
