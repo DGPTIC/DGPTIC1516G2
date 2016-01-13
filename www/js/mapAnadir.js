@@ -8,10 +8,12 @@ var appGlobals = {
  lastMapPoint: null,
  hayMapPoint: false,
  symbol: null,
- center: [-88.147286296, 41.785857478]
+ center: [-17.858908, 28.683404],
+ geocoder: null,
+ geoLocate: null
 };
 
-function loadMapAnadir(ext) {
+function loadMapAnadir(center, zoom) {
 
  require([
    "dojo/_base/array",
@@ -20,6 +22,7 @@ function loadMapAnadir(ext) {
    "dojo/on",
    "dojo/parser",
    "dojo/query!css3",
+   "dojo/ready",
    "esri/Color",
    "esri/config",
    "esri/dijit/AttributeInspector",
@@ -36,10 +39,10 @@ function loadMapAnadir(ext) {
    "esri/symbols/SimpleMarkerSymbol",
    "esri/tasks/locator",
    "esri/tasks/query", "dojo/domReady!"
- ], function(array, lang, domConstruct, on, parser, query, Color, esriConfig, AttributeInspector, Geocoder,
+ ], function(array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
    HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
    SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query) {
-
+  ready(function() {
    parser.parse();
 
    esriConfig.defaults.io.proxyUrl = "/sproxy/";
@@ -54,24 +57,45 @@ function loadMapAnadir(ext) {
      markerSymbol: sms
    }, domConstruct.create("div"));
 
+   on(infoWindowPopup, "show", function(event) {
+       if ($("*.esriMobileNavigationItem.left > img[src]").exists()) {
+         $("*.esriMobileNavigationItem.left > img").removeAttr("src");
+       }
+       if ($("*.esriMobileNavigationItem.right > img[src]").exists) {
+         $("*.esriMobileNavigationItem.right > img").removeAttr("src");
+       }
+     });
 
    // ----------------------------------------------------
    // Initialize the main User Interface components
    // ----------------------------------------------------
-   appGlobals.map = new Map("map" + ext, {
+   appGlobals.hayMapPoint = false;
+    appGlobals.map = new Map("map2", {
      sliderOrientation: "horizontal",
      sliderPosition: "bottom-right",
      basemap: "topo",
-     center: appGlobals.center,
-     zoom: 13,
+     center: center,
+     zoom: zoom,
      sliderStyle: "small",
      infoWindow: infoWindowPopup
    });
+ 
 
+   iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
+   HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
+   SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query);
+ });
+  });
+}
+function iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
+   HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
+   SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query) {
    appGlobals.citizenRequestLayer = new FeatureLayer(appGlobals.citizenRequestLayerURL, {
      mode: FeatureLayer.MODE_ONEDEMAND,
      outFields: ["*"]
    });
+
+   
 
    appGlobals.map.on("click", function(event) {
 
@@ -83,26 +107,35 @@ function loadMapAnadir(ext) {
 
    });
 
-   appGlobals.map.on("load", function(event) {
-     var geocoder = new Geocoder({
+   appGlobals.locator = new Locator(appGlobals.locatorURL);
+   if(appGlobals.geocoder != null) {
+     appGlobals.geocoder.destroy();
+     appGlobals.geoLocate.destroy();
+   }
+   appGlobals.geocoder = new Geocoder({
        arcgisGeocoder: {
          placeholder: "Search "
        },
        map: appGlobals.map
-     }, "ui-dijit-geocoder" + ext);
-     geocoder.startup();
-
-     var geoLocate = new LocateButton({
+     }, "ui-dijit-geocoder2");
+     appGlobals.geocoder.startup();
+     appGlobals.geoLocate = new LocateButton({
        map: appGlobals.map
-     }, "LocateButton" + ext);
-     geoLocate.startup();
+     }, "LocateButton2");
+     appGlobals.geoLocate.startup();
+     
 
+     appGlobals.citizenRequestLayer.on("edits-complete", function(eve) {
+    
+       
+       var file = document.getElementById("fileinput");
+       for(var i = 0; i < file.files.length; i++) {
+        var formData = new FormData();
+        formData.append("attachment", file.files[i], file.files[i].name);
+        appGlobals.citizenRequestLayer.addAttachment(eve.adds[0].objectId, formData);
+       }
+       appGlobals.lastMapPoint = null;
    });
-
-   appGlobals.locator = new Locator(appGlobals.locatorURL);
-
-
-
 
    function initializeEventHandlers() {
      on(appGlobals.map, "load", function(event) {
@@ -118,18 +151,6 @@ function loadMapAnadir(ext) {
      on(appGlobals.citizenRequestLayer, "click", function(event) {
        appGlobals.map.infoWindow.setFeatures([event.graphic]);
      });
-
-
-     on(infoWindowPopup, "show", function(event) {
-       if ($("*.esriMobileNavigationItem.left > img[src]").exists()) {
-         $("*.esriMobileNavigationItem.left > img").removeAttr("src");
-       }
-       if ($("*.esriMobileNavigationItem.right > img[src]").exists) {
-         $("*.esriMobileNavigationItem.right > img").removeAttr("src");
-       }
-     });
-
-
 
 
      $(".basemapOption").click(swapBasemap);
@@ -185,7 +206,7 @@ function loadMapAnadir(ext) {
    }
 
 
- }); // end require / function
+ }
 
 
  function swapBasemap(event) {
@@ -241,4 +262,3 @@ function loadMapAnadir(ext) {
    divFormulario.innerHTML = html;
 
  }
-}

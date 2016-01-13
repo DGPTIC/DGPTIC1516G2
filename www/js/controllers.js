@@ -126,7 +126,6 @@ angular.module('starter.controllers', ['ngOpenFB'])
     $state.go('incidencia');
   }
   $scope.iniciar = function() {
-    console.log(imagenesG);
     $scope.images = [];
     for (i = 0; i < imagenesG.length; i++)
       $scope.images.push(imagenesG[i].url);
@@ -157,10 +156,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
  
-  var ext = "2";
-  loadMapAnadir(ext);
+ 
   $scope.init = function () {
+     var center = [map.extent.getCenter().getLongitude(), map.extent.getCenter().getLatitude()];
 
+     loadMapAnadir(center, map.getZoom());
     
   };
 

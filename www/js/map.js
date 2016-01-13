@@ -104,8 +104,6 @@ function initMap(
   geoLocate.startup();
 
   //add boundaries and place names
-  var labels = new ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer");
-  map.addLayer(labels);
 
 
   responsePoints = new FeatureLayer("https://services.arcgis.com/hkQNLKNeDVYBjvFE/ArcGIS/rest/services/Accesibilidad/FeatureServer/0", {
@@ -119,7 +117,6 @@ function initMap(
     
     var objectId = graphicAttributes.OBJECTID;
     responsePoints.queryAttachmentInfos(objectId, function(infos) {
-
       angular.element(document.getElementById('map')).scope().cargarImagenesIncidencia(infos);
 
     });
