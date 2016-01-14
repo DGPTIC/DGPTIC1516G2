@@ -10,6 +10,7 @@ valoresValoracion['Muy malo'] = -2;
 valoresValoracion['Pésimo'] = -3;
 
 var loggedIn = false;
+var index = 0;
 angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
@@ -65,6 +66,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   });
      $scope.goProfile = function () {
 	  if(!loggedIn){
+		index=0;
 		$scope.showLoginAlert();
 	  }
 	  else{
@@ -90,8 +92,14 @@ angular.module('starter.controllers', ['ngOpenFB'])
             if (response.status === 'connected') {
 				  loggedIn=true;
                 console.log('Facebook login succeeded');
-                $scope.closeLogin();
-                 
+                
+                if(index == 0){
+					$state.go('profile');
+				}
+				else if(index == 1){
+					$state.go('add.map');
+				}     
+				$scope.closeLogin();
             } else {
                 alert('Facebook login failed');
                    loggedIn=false;
@@ -105,6 +113,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $state.go('add.map');
     }
     else {
+	  index=1;
       $scope.showLoginAlert();
     }
   };
@@ -137,7 +146,17 @@ angular.module('starter.controllers', ['ngOpenFB'])
 })
 
 
-.controller('ProfileController', function ($scope, ngFB) {
+.controller('ProfileController', function ($scope,$state, $ionicModal, $ionicPopup, ngFB) {
+	  $scope.logout = function() {
+		    loggedIn=false;
+		  $state.go('map');
+		                  ngFB.logout().then(
+                    function() {
+                        alert('Logout successful');
+                    },
+                    errorHandler);
+		
+        };
   // TODO: Añadir a $scope todos los datos del usuario actual (si inició sesión)
   // Dependiendo de esta variable se muestra la pantalla de inicio de sesión o el perfil
   $scope.loggedIn = true;
@@ -151,6 +170,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
         function (error) {
             alert('Facebook error: ' + error.error_description);
         });
+        
+
 })
 
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
