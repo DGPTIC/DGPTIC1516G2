@@ -9,7 +9,7 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-   
+
 
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
@@ -53,9 +53,11 @@
         </ion-header-bar>
 
         <ion-content ng-controller="MenuController">
-          <div class="item item-divider">
-            Filtros
-          </div>
+          <div class="item item-divider custom-divider">Organismo</div>
+          <ion-toggle ng-model="publicoCheck" ng-change="filter()" toggle-class="toggle-balanced">Público</ion-toggle>
+          <ion-toggle ng-model="privadoCheck" ng-change="filter()" toggle-class="toggle-balanced">Privado</ion-toggle>
+
+          <div class="item item-divider custom-divider">Valoración</div>
           <ion-toggle ng-model="excelCheck" ng-change="filter()" toggle-class="toggle-balanced">Excelente</ion-toggle>
           <ion-toggle ng-model="mbCheck" ng-change="filter()" toggle-class="toggle-balanced">Muy bueno</ion-toggle>
           <ion-toggle ng-model="bCheck" ng-change="filter()" toggle-class="toggle-balanced">Bueno</ion-toggle>
@@ -63,9 +65,6 @@
           <ion-toggle ng-model="mCheck" ng-change="filter()" toggle-class="toggle-balanced">Malo</ion-toggle>
           <ion-toggle ng-model="mmCheck" ng-change="filter()" toggle-class="toggle-balanced">Muy malo</ion-toggle>
           <ion-toggle ng-model="pCheck" ng-change="filter()" toggle-class="toggle-balanced">Pésimo</ion-toggle>
-          <div class="item item-divider">
-            Acciones
-          </div>
         </ion-content>
       </ion-side-menu>
 

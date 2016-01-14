@@ -26,11 +26,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('MenuController', function ($scope) {
   $scope.filter = function () {
     var prefix = "";
+    var rating = false;
 
     function queryStr (b, value) {
       var str = "";
 
       if (b === true) {
+        rating = true;
         str = prefix + "Valoración = '" + value + "'";
         prefix = " OR ";
       }
@@ -38,13 +40,29 @@ angular.module('starter.controllers', ['ngOpenFB'])
       return str;
     };
 
-    var query = queryStr($scope.excelCheck, 3) +
-                queryStr($scope.mbCheck,    2) +
-                queryStr($scope.bCheck,     1) +
-                queryStr($scope.rCheck,     0) +
-                queryStr($scope.mCheck,    -1) +
-                queryStr($scope.mmCheck,   -2) +
-                queryStr($scope.pCheck,    -3);
+    var query = '(' + queryStr($scope.excelCheck, 3) +
+                      queryStr($scope.mbCheck,    2) +
+                      queryStr($scope.bCheck,     1) +
+                      queryStr($scope.rCheck,     0) +
+                      queryStr($scope.mCheck,    -1) +
+                      queryStr($scope.mmCheck,   -2) +
+                      queryStr($scope.pCheck,    -3) + ')';
+
+    if (!rating) query = '';
+
+    if ($scope.publicoCheck != $scope.privadoCheck) {
+      if (rating)
+        query += " AND Organismo = '";
+      else
+        query += "Organismo = '";
+
+      if ($scope.publicoCheck === true)
+        query += "Público";
+      else
+        query += "Privado";
+
+      query += "'";
+    }
 
     responsePoints.setDefinitionExpression(query);
     map.addLayers([responsePoints]);
@@ -55,7 +73,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('MapController', function ($scope, $state, $ionicModal, $ionicPopup, ngFB) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
-  
+
   // Creación del popup que pide que el usuario inicie sesión
   $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope,
@@ -71,7 +89,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 		  $state.go('profile');
 	  }
    }
-	
+
 	$scope.showLoginAlert = function() {
      var alertPopup = $ionicPopup.show({
        title: 'Autenticación necesaria',
@@ -80,10 +98,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
        buttons: [
        {text: 'Cancelar' },
        {text: 'Login', type: 'button-positive', onTap: function(){$scope.fbLogin();}}
-      ] 
+      ]
      });
    };
-   
+
    $scope.fbLogin = function () {
     ngFB.login({scope: 'email,publish_actions'}).then(
         function (response) {
@@ -91,7 +109,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 				  loggedIn=true;
                 console.log('Facebook login succeeded');
                 $scope.closeLogin();
-                 
+
             } else {
                 alert('Facebook login failed');
                    loggedIn=false;
@@ -155,13 +173,13 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
- 
- 
+
+
   $scope.init = function () {
      var center = [map.extent.getCenter().getLongitude(), map.extent.getCenter().getLatitude()];
 
      loadMapAnadir(center, map.getZoom());
-    
+
   };
 
   $scope.postForm = function () {
@@ -179,7 +197,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
     $state.go('map');
   };
-    
+
    $scope.goFormulario = function () {
       if(appGlobals.hayMapPoint == false)
         $scope.showAlert();

@@ -33,16 +33,6 @@
   z-index: 50;
 }
 
-.Search {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: 285px;
-  z-index: 50;
-}
-
 .simpleGeocoder .esriGeocoderContainer {
   position: absolute;
   top: 10px;
@@ -52,7 +42,16 @@
   width: 285px;
   z-index: 3;
   }
-  
+
+.simpleGeocoder .esriGeocoder .esriGeocoderSearch {
+  margin-top: 15px;
+}
+
+.custom-divider {
+  color: white;
+  background-color: #c3b4f4;
+}
+
 #profile-bg {
         position: fixed;
         left: 0;
