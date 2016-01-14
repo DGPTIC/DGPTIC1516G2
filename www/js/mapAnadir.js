@@ -73,7 +73,7 @@ function loadMapAnadir(center, zoom) {
     appGlobals.map = new Map("map2", {
      sliderOrientation: "horizontal",
      sliderPosition: "bottom-right",
-     basemap: "topo",
+     basemap: "streets",
      center: center,
      zoom: zoom,
      sliderStyle: "small",
@@ -100,7 +100,6 @@ function iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esr
    appGlobals.map.on("click", function(event) {
 
      addMarker(event.mapPoint);
-
      appGlobals.lastMapPoint = event.mapPoint;
      appGlobals.hayMapPoint = true;
      getValoresField(array);
@@ -126,14 +125,19 @@ function iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esr
      
 
      appGlobals.citizenRequestLayer.on("edits-complete", function(eve) {
-    
-       
        var file = document.getElementById("fileinput");
-       for(var i = 0; i < file.files.length; i++) {
-        var formData = new FormData();
-        formData.append("attachment", file.files[i], file.files[i].name);
-        appGlobals.citizenRequestLayer.addAttachment(eve.adds[0].objectId, formData);
+       var editComplete = true;
+       if(eve.adds.length == 0) {
+	       editComplete = false;
        }
+       else {
+       	for(var i = 0; i < file.files.length; i++) {
+        	var formData = new FormData();
+        	formData.append("attachment", file.files[i], file.files[i].name);
+        	appGlobals.citizenRequestLayer.addAttachment(eve.adds[0].objectId, formData);
+       	}
+       }
+       angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(editComplete);
        appGlobals.lastMapPoint = null;
    });
 
@@ -239,7 +243,6 @@ function iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esr
          html += "<div class=\"input-label\">" + field.name + "</div>"
          html += "<select id=\"select" + name + "\" ng-model=\"select" + name + "\" ng-change=\"valueChange" + name + "(select" + name + ")\">";
          if (field.domain.hasOwnProperty("codedValues")) {
-
            var codedValuesArray0 = field.domain.codedValues;
            array.forEach(codedValuesArray0, function(codedValue) {
              html += "<option>" + codedValue.name + "</option>";

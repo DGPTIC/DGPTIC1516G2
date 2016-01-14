@@ -105,7 +105,6 @@ function initMap(
 
   //add boundaries and place names
 
-
   responsePoints = new FeatureLayer("https://services.arcgis.com/hkQNLKNeDVYBjvFE/ArcGIS/rest/services/Accesibilidad/FeatureServer/0", {
     mode: FeatureLayer.MODE_ONDEMAND,
     outFields: ['*']
@@ -118,13 +117,13 @@ function initMap(
     var objectId = graphicAttributes.OBJECTID;
     responsePoints.queryAttachmentInfos(objectId, function(infos) {
       angular.element(document.getElementById('map')).scope().cargarImagenesIncidencia(infos);
-
     });
     angular.element(document.getElementById('map')).scope().cargarIncidencia(graphicAttributes);
     
   });
 
   map.addLayers([responsePoints]);
+
   
 }
 

@@ -9,6 +9,14 @@ valoresValoracion['Malo'] = -1;
 valoresValoracion['Muy malo'] = -2;
 valoresValoracion['Pésimo'] = -3;
 
+function getKeyForValue(obj, value) {
+  for (var name in obj) {
+    if (obj[name] == value) {
+      return name;
+    }
+  }
+}
+
 var loggedIn = false;
 angular.module('starter.controllers', ['ngOpenFB'])
 
@@ -169,15 +177,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
     // TODO Posiblemente mostrar un popup cuando el envío haya terminado para avisar al usuario
     getAtributos();
     post();
-    $scope.mostrarIncidenciaEnviada();
+    //$scope.mostrarIncidenciaEnviada();
 
     // Deshabilitar el volver atrás y cambiar a la pantalla principal
     $ionicHistory.nextViewOptions({
       disableBack: true,
       historyRoot: true
     });
-
-    $state.go('map');
+    
+    
   };
     
    $scope.goFormulario = function () {
@@ -200,13 +208,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
      });
    };
 
-   $scope.mostrarIncidenciaEnviada = function() {
-     var alertPopup = $ionicPopup.alert({
-       title: 'Incidendcia enviada!',
-       template: 'Intentaremos solucionarla lo antes posible'
-     });
+   $scope.mostrarIncidenciaEnviada = function(editComplete) {
+     if(editComplete)
+       $ionicPopup.alert({
+        title: "Incidencia enviada",
+        template: "Tendremos en cuenta tu opinión"
+      });
+     else
+       $ionicPopup.alert({
+       title: "Error",
+       template: "Error"
+      });
+     $state.go('map');
    };
 
 });
-
-
