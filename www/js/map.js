@@ -123,7 +123,6 @@ function initMap (
   });
 
   map.addLayers([responsePoints]);
-
 }
 
 function initEditor (

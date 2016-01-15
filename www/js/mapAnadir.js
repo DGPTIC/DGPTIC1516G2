@@ -69,7 +69,7 @@ function loadMapAnadir (center, zoom) {
       // ----------------------------------------------------
       appGlobals.hayMapPoint = false;
       appGlobals.map = new Map("map2", {
-        basemap: "topo",
+        basemap: "streets",
         center: center,
         zoom: zoom,
         slider: false,
@@ -126,12 +126,18 @@ function iniciar (
 
   appGlobals.citizenRequestLayer.on("edits-complete", function (eve) {
     var file = document.getElementById("fileinput");
-    for (var i = 0; i < file.files.length; i++) {
-      var formData = new FormData();
-      formData.append("attachment", file.files[i], file.files[i].name);
-      appGlobals.citizenRequestLayer.addAttachment(eve.adds[0].objectId, formData);
+
+    var editComplete = eve.adds.length != 0;
+    if (eve.adds.length != 0) {
+      for (var i = 0; i < file.files.length; i++) {
+        var formData = new FormData();
+        formData.append("attachment", file.files[i], file.files[i].name);
+        appGlobals.citizenRequestLayer.addAttachment(eve.adds[0].objectId, formData);
+      }
     }
 
+    file.value = '';
+    angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(editComplete);
     appGlobals.lastMapPoint = null;
   });
 
@@ -152,8 +158,8 @@ function iniciar (
 
     $(".basemapOption").click(swapBasemap);
 
-    $("#ui-features-panel").on("popupafteropen", function(event, ui) {
-      $("#ui-features-panel").on("popupafterclose", function(event, ui) {
+    $("#ui-features-panel").on("popupafteropen", function (event, ui) {
+      $("#ui-features-panel").on("popupafterclose", function (event, ui) {
         if (appGlobals.collectMode)
           $("#ui-collection-prompt").show();
         else
@@ -170,16 +176,16 @@ function iniciar (
         $("#ui-collection-prompt").popup("close");
       }, 1200);
     });
-  }
+  };
 
-   // ----------------------------------------------------
-   // Initialize Event Handlers and add the citizen request
-   // layer to the map
-   // ----------------------------------------------------
-   initializeEventHandlers();
-   appGlobals.map.addLayers([appGlobals.citizenRequestLayer]);
+  // ----------------------------------------------------
+  // Initialize Event Handlers and add the citizen request
+  // layer to the map
+  // ----------------------------------------------------
+  initializeEventHandlers();
+  appGlobals.map.addLayers([appGlobals.citizenRequestLayer]);
 
-   function addMarker (mapPoint) {
+  function addMarker (mapPoint) {
     var newSymbol = new Graphic(mapPoint, new SimpleMarkerSymbol({
       "color": [255, 255, 255, 64],
       "size": 12,
@@ -221,7 +227,7 @@ function getValoresField (array) {
 
   if (appGlobals.citizenRequestLayer.hasOwnProperty("fields")) {
     var fieldsArray = appGlobals.citizenRequestLayer.fields;
-    array.forEach(fieldsArray, function(field, i) {
+    array.forEach(fieldsArray, function (field, i) {
       if (field.name != "Valoración" && field.name != "Descripción" && field.name != "Temática" && field.name != "Organismo" && field.name != "Nombre_Organismo")
         return;
       var name = field.name.toLowerCase().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u");

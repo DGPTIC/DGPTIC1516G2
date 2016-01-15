@@ -11,6 +11,14 @@ var valoresValoracion = {
   'Pésimo': -3
 };
 
+function getKeyForValue(obj, value) {
+  for (var name in obj) {
+    if (obj[name] == value) {
+      return name;
+    }
+  }
+}
+
 var loggedIn = false;
 var index = 0;
 
@@ -88,7 +96,7 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   };
 
   $scope.showLoginAlert = function () {
-    var alertPopup = $ionicPopup.show({
+    $ionicPopup.show({
       title: 'Autenticación necesaria',
       template: 'No has accedido a través de tus redes sociales',
       scope: $scope,
@@ -115,10 +123,14 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
         else if (index == 1)
           $state.go('add.map');
 
-        $scope.closeLogin();
+        //$scope.closeLogin();
       }
       else {
-        alert('Facebook login failed');
+        $ionicPopup.alert({
+          title: "Inicio de sesión",
+          template: "No se ha podido iniciar sesión"
+        });
+
         loggedIn = false;
       }
     });
@@ -153,15 +165,23 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   };
 })
 
-.controller('ProfileController', function ($scope, $state, ngFB) {
+.controller('ProfileController', function ($scope, $state, $ionicPopup, ngFB) {
   $scope.logout = function() {
     loggedIn = false;
     $state.go('map');
 
     ngFB.logout().then(function () {
-      alert('Logout successful');
+      $ionicPopup.alert({
+        title: "Cierre de sesión",
+        template: "Se ha cerrado la sesión satisfactoriamente"
+      });
     },
-    errorHandler);
+    function () {
+      $ionicPopup.alert({
+        title: "Cierre de sesión",
+        template: "Un error ha ocurrido al iniciar sesión"
+      });
+    });
   };
 
   $scope.loggedIn = true;
@@ -174,7 +194,10 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
       $scope.user = user;
     },
     function (error) {
-      alert('Facebook error: ' + error.message);
+      $ionicPopup.alert({
+        title: "Error al recuperar los datos",
+        template: error.message
+      });
     }
   );
 })
@@ -190,7 +213,7 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   $scope.postForm = function () {
     getAtributos();
     post();
-    $scope.mostrarIncidenciaEnviada();
+    //$scope.mostrarIncidenciaEnviada();
 
     // Deshabilitar el volver atrás y cambiar a la pantalla principal
     $ionicHistory.nextViewOptions({
@@ -198,7 +221,7 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
       historyRoot: true
     });
 
-    $state.go('map');
+
   };
 
   $scope.goFormulario = function () {
@@ -215,19 +238,24 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   };
 
   $scope.showAlert = function () {
-    var alertPopup = $ionicPopup.alert({
+    $ionicPopup.alert({
       title: 'Selecciona una ubicación!',
       template: 'No has seleccionado una ubicación, por favor, pincha sobre el lugar de la incidendcia'
     });
   };
 
-  $scope.mostrarIncidenciaEnviada = function () {
-    var alertPopup = $ionicPopup.alert({
-      title: 'Incidendcia enviada!',
-      template: 'Intentaremos solucionarla lo antes posible'
-    });
+  $scope.mostrarIncidenciaEnviada = function (editComplete) {
+    if (editComplete)
+      $ionicPopup.alert({
+        title: "Incidencia enviada",
+        template: "Tendremos en cuenta tu opinión"
+      });
+    else
+      $ionicPopup.alert({
+        title: "Error",
+        template: "Error"
+      });
+
+    $state.go('map');
   };
-
 });
-
-

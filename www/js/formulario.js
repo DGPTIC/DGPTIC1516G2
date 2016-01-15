@@ -1,5 +1,5 @@
 function cargarIncidencia() {
-  document.getElementById("valoracion-incidencia").value = datosIncidencia.Valoración;
+  document.getElementById("valoracion-incidencia").value = getKeyForValue(valoresValoracion, datosIncidencia.Valoración);
   document.getElementById("descripcion-incidencia").value = datosIncidencia.Descripción;
   document.getElementById("tematica-incidencia").value = datosIncidencia.Temática;
   document.getElementById("organismo-incidencia").value = datosIncidencia.Organismo;
@@ -36,9 +36,10 @@ function getAtributos () {
     newAttributesG.Organismo = document.getElementById("selectorganismo").value;
     newAttributesG.Descripción = document.getElementById("descripcion").value;
     newAttributesG.Nombre_Organismo = document.getElementById("nombre_organismo").value;
+    document.getElementById("descripcion").value = '';
+    document.getElementById("nombre_organismo").value = '';
   });
 }
-
 
 function post () {
   require([
@@ -57,7 +58,16 @@ function post () {
     };
 
     var incidentGraphic = new Graphic(appGlobals.lastMapPoint, null, incidentAttributes);
-    appGlobals.citizenRequestLayer.applyEdits([incidentGraphic], null, null);
+    try {
+      if (navigator.onLine)
+        appGlobals.citizenRequestLayer.applyEdits([incidentGraphic], null, null);
+      else
+        angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(false);
+    }
+    catch(eve) {
+      angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(false);
+    }
+
     appGlobals.lastMapPoint = null;
   });
 }
