@@ -85,7 +85,7 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
 .controller('MapController', function ($scope, $state, $ionicPopup, ngFB) {
   // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
-
+  $scope.source = "img/person.png";
   $scope.goProfile = function () {
     if (loggedIn)
       $state.go('profile');
@@ -117,7 +117,21 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
     ngFB.login({scope: 'email,publish_actions'}).then(function (response) {
       if (response.status === 'connected') {
         loggedIn = true;
-
+        ngFB.api({
+          path: '/me',
+          params: {fields: 'id,name'}
+        }).then(
+          function (user) {
+            $scope.user = user;
+            $scope.source = "http://graph.facebook.com/" + user.id + "/picture?width=270&height=270"
+          },
+          function (error) {
+            $ionicPopup.alert({
+              title: "Error al recuperar los datos",
+              template: error.message
+            });
+          }
+        );
         if (index == 0)
           $state.go('profile');
         else if (index == 1)
