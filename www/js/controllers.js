@@ -12,6 +12,8 @@ var valoresValoracion = {
 };
 
 var loggedIn = false;
+var index = 0;
+
 angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
@@ -79,8 +81,10 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   $scope.goProfile = function () {
     if (loggedIn)
       $state.go('profile');
-    else
+    else {
+      index = 0;
       $scope.showLoginAlert();
+    }
   };
 
   $scope.showLoginAlert = function () {
@@ -105,7 +109,13 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
     ngFB.login({scope: 'email,publish_actions'}).then(function (response) {
       if (response.status === 'connected') {
         loggedIn = true;
-        console.log('Facebook login succeeded');
+
+        if (index == 0)
+          $state.go('profile');
+        else if (index == 1)
+          $state.go('add.map');
+
+        $scope.closeLogin();
       }
       else {
         alert('Facebook login failed');
@@ -117,8 +127,10 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   $scope.addNotification = function () {
     if (loggedIn)
       $state.go('add.map');
-    else
+    else {
+      index = 1;
       $scope.showLoginAlert();
+    }
   };
 
   $scope.cargarIncidencia = function(content) {
@@ -141,8 +153,17 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
   };
 })
 
+.controller('ProfileController', function ($scope, $state, ngFB) {
+  $scope.logout = function() {
+    loggedIn = false;
+    $state.go('map');
 
-.controller('ProfileController', function ($scope, ngFB) {
+    ngFB.logout().then(function () {
+      alert('Logout successful');
+    },
+    errorHandler);
+  };
+
   $scope.loggedIn = true;
 
   ngFB.api({

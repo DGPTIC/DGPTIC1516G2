@@ -1,12 +1,11 @@
 <ion-view view-title="Perfil">
   <ion-content id="profile-bg">
-    <div class="list card">
-      <div class="item item-body">
-          <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
-      </div>
+    <div style="background-color: rgba(0,0,0,0);">
+        <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
     </div>
-    <div class="item" align="center">
+    <div id="profile-description" class="item item-bottom" align="center">
       <h2 id="profile-name">{{user.name}}</h2>
+      <br><button class="button button-positive" ng-click="logout()">Cerrar sesión</button>
     </div>
   </ion-content>
 </ion-view>
