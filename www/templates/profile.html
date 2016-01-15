@@ -1,14 +1,12 @@
 <ion-view view-title="Perfil">
-    <ion-content>
-        <div class="list card">
-            
-            <div class="item item-body">
-                <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
-            </div>
-        </div>
-        <div class="item" align="center">
-                <h2>{{user.name}}</h2>
-
-            </div>
-    </ion-content>
+  <ion-content id="profile-bg">
+    <div class="list card">
+      <div class="item item-body">
+          <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
+      </div>
+    </div>
+    <div class="item" align="center">
+      <h2 id="profile-name">{{user.name}}</h2>
+    </div>
+  </ion-content>
 </ion-view>

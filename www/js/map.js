@@ -1,7 +1,7 @@
 var map;
 var responsePoints;
 
-function loadMap() {
+function loadMap () {
   require([
     "esri/map",
     "esri/tasks/GeometryService",
@@ -33,7 +33,7 @@ function loadMap() {
     "dojo/_base/connect",
     "dojo/domReady!"
 
-  ], function(
+  ], function (
     Map, GeometryService, LocateButton, Search, Geocoder,
     ArcGISTiledMapServiceLayer, FeatureLayer,
     Color, SimpleMarkerSymbol, SimpleLineSymbol, PopupMobile,
@@ -43,7 +43,7 @@ function loadMap() {
     arrayUtils, parser, keys, ready,
     BorderContainer, ContentPane, domClass, domConstruct, connect
   ) {
-    ready(function() {
+    ready(function () {
       parser.parse();
 
       // snapping is enabled for this sample - change the tooltip to reflect this
@@ -55,8 +55,8 @@ function loadMap() {
       //This service is for development and testing purposes only. We recommend that you create your own geometry service for use within your applications.
       esriConfig.defaults.geometryService = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
       var fill = new SimpleFillSymbol("solid", null, new Color("#A4CE67"));
-      
-    
+
+
       map = new Map("map", {
         basemap: "streets",
         center: [-17.858908, 28.683404],
@@ -67,7 +67,7 @@ function loadMap() {
       map.showInfoWindowOnClick = false;
       map.usePopupManager = true;
 
-      map.on("load", function(evt) {
+      map.on("load", function (evt) {
         initMap(Map, GeometryService, LocateButton, Search, Geocoder,
           ArcGISTiledMapServiceLayer, FeatureLayer,
           Color, SimpleMarkerSymbol, SimpleLineSymbol,
@@ -80,7 +80,7 @@ function loadMap() {
   });
 }
 
-function initMap(
+function initMap (
   Map, GeometryService, LocateButton, Search, Geocoder,
   ArcGISTiledMapServiceLayer, FeatureLayer,
   Color, SimpleMarkerSymbol, SimpleLineSymbol,
@@ -92,43 +92,41 @@ function initMap(
 
   var geocoder = new Geocoder({
     arcgisGeocoder: {
-      placeholder: "Search "
+      placeholder: "Buscar "
     },
     map: map
   }, "Search");
+
   geocoder.startup();
+
   var geoLocate = new LocateButton({
     map: map
   }, "LocateButton");
 
   geoLocate.startup();
 
-  //add boundaries and place names
-
-
   responsePoints = new FeatureLayer("https://services.arcgis.com/hkQNLKNeDVYBjvFE/ArcGIS/rest/services/Accesibilidad/FeatureServer/0", {
     mode: FeatureLayer.MODE_ONDEMAND,
     outFields: ['*']
   });
 
-  dojo.connect(responsePoints, "onClick", function(evt) {
+  dojo.connect(responsePoints, "onClick", function (evt) {
 
     graphicAttributes = evt.graphic.attributes;
-    
-    var objectId = graphicAttributes.OBJECTID;
-    responsePoints.queryAttachmentInfos(objectId, function(infos) {
-      angular.element(document.getElementById('map')).scope().cargarImagenesIncidencia(infos);
 
+    var objectId = graphicAttributes.OBJECTID;
+    responsePoints.queryAttachmentInfos(objectId, function (infos) {
+      angular.element(document.getElementById('map')).scope().cargarImagenesIncidencia(infos);
     });
     angular.element(document.getElementById('map')).scope().cargarIncidencia(graphicAttributes);
-    
+
   });
 
   map.addLayers([responsePoints]);
-  
+
 }
 
-function initEditor(
+function initEditor (
   Map, GeometryService, LocateButton, Search,
   ArcGISTiledMapServiceLayer, FeatureLayer,
   Color, SimpleMarkerSymbol, SimpleLineSymbol,
@@ -178,7 +176,7 @@ function initEditor(
     settings: settings
   };
   var myEditor = new Editor(params, 'editorDiv');
-  //define snapping options
+
   var symbol = new SimpleMarkerSymbol(
     SimpleMarkerSymbol.STYLE_CROSS,
     15,
