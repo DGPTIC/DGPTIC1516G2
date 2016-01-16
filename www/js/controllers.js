@@ -250,20 +250,20 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.showAlert = function () {
     $ionicPopup.alert({
       title: 'Selecciona una ubicación!',
-      template: 'No has seleccionado una ubicación, por favor, pincha sobre el lugar de la incidendcia'
+      template: 'No has seleccionado una ubicación. Por favor, pincha sobre el lugar de la notificación'
     });
   };
 
   $scope.mostrarIncidenciaEnviada = function (editComplete) {
     if (editComplete)
       $ionicPopup.alert({
-        title: "Incidencia enviada",
+        title: "Notificación enviada",
         template: "Tendremos en cuenta tu opinión"
       });
     else
       $ionicPopup.alert({
         title: "Error",
-        template: "Error"
+        template: "No se ha podido enviar la notificación"
       });
 
     $state.go('map');
