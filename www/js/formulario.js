@@ -64,7 +64,7 @@ function post () {
       else
         angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(false);
     }
-    catch(eve) {
+    catch (eve) {
       angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(false);
     }
 

@@ -1,7 +1,7 @@
 {
-  "name": "accesibilidad",
+  "name": "accesibilidad-la-palma",
   "version": "1.1.1",
-  "description": "Accesibilidad: An Ionic project",
+  "description": "Accesibilidad La Palma",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",

@@ -47,12 +47,24 @@
   background-color: #c3b4f4;
 }
 
-#splash {
-  background: url('../img/splash.jpg') no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+@media screen and (orientation:portrait) {
+  #splash {
+    background: url('../img/splash_portrait.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+}
+
+@media screen and (orientation:landscape) {
+  #splash {
+    background: url('../img/splash_landscape.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 }
 
 #map {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.accesibilidad371246" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Accesibilidad</name>
+<widget id="com.ionicframework.accesibilidadlapalma458850" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Accesibilidad La Palma</name>
   <description>
-    An Ionic Framework and Cordova project.
+    Añade y visualiza notificaciones sobre accesibilidad en la isla de La Palma.
   </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-    Ionic Framework Team
+  <author email="hi@ionicframework" href="https://www.ull.es/">
+    Dirección y Gestión de Proyectos TIC. Universidad de La Laguna.
   </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -14,13 +14,11 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="loadUrlTimeoutValue" value="70000"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
-  <allow-intent href="*"/>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>

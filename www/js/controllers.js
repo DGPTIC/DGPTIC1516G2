@@ -22,7 +22,7 @@ function getKeyForValue(obj, value) {
 var loggedIn = false;
 var index = 0;
 
-angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
+angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
   $scope.initialize = function () {
@@ -83,9 +83,9 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
 })
 
 .controller('MapController', function ($scope, $state, $ionicPopup, ngFB) {
-  // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
   loadMap();
   $scope.source = "img/person.png";
+
   $scope.goProfile = function () {
     if (loggedIn)
       $state.go('profile');
@@ -217,8 +217,6 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
 })
 
 .controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
-  // TODO: Añadir a $scope.userImage la imagen del usuario actual (si inició sesión)
-
   $scope.init = function () {
     var center = [map.extent.getCenter().getLongitude(), map.extent.getCenter().getLatitude()];
     loadMapAnadir(center, map.getZoom());
@@ -234,8 +232,6 @@ angular.module('starter.controllers', ['starter.services', 'ngOpenFB'])
       disableBack: true,
       historyRoot: true
     });
-
-
   };
 
   $scope.goFormulario = function () {
