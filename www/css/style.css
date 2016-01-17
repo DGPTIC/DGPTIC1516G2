@@ -108,10 +108,17 @@
 }
 
 #profile-description {
-  position: fixed;
+  position: absolute;
   bottom: 0px;
   width: 100%;
   height: 50%;
+  background: white;
+}
+
+#profile-incident {
+  position: absolute;
+  top: 400px;
+  width: 100%;
   background: white;
 }
 

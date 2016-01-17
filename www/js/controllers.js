@@ -1,6 +1,6 @@
 var newAttributesG;
 var datosIncidencia;
-
+var userId;
 var valoresValoracion = {
   'Excelente': 3,
   'Muy bueno': 2,
@@ -122,10 +122,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
           params: {fields: 'id,name'}
         }).then(
           function (user) {
-            $scope.user = user;
+          	userId = user.id;
+          	$scope.user = user;
             $scope.source = "http://graph.facebook.com/" + user.id + "/picture?width=270&height=270"
           },
           function (error) {
+          	userId = "";
             $ionicPopup.alert({
               title: "Error al recuperar los datos",
               template: error.message
@@ -140,6 +142,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
         //$scope.closeLogin();
       }
       else {
+      	userId = "";
         $ionicPopup.alert({
           title: "Inicio de sesión",
           template: "No se ha podido iniciar sesión"
@@ -182,6 +185,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('ProfileController', function ($scope, $state, $ionicPopup, ngFB) {
   $scope.logout = function() {
     loggedIn = false;
+    userId = "";
     $state.go('map');
     scopeMapController.source = "img/person.png";
     ngFB.logout().then(function () {
@@ -199,13 +203,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };
 
   $scope.loggedIn = true;
-
+  $scope.incidenciasUsuario = [];
+  getIncidenciasUsuario($scope);
   ngFB.api({
     path: '/me',
     params: {fields: 'id,name'}
   }).then(
     function (user) {
-      $scope.user = user;
+		
+      	$scope.user = user;
     },
     function (error) {
       $ionicPopup.alert({
@@ -264,6 +270,20 @@ angular.module('starter.controllers', ['ngOpenFB'])
       $ionicPopup.alert({
         title: "Error",
         template: "No se ha podido enviar la notificación"
+      });
+
+    $state.go('map');
+  };
+  $scope.mostrarImagenEnviada = function (editComplete) {
+    if (editComplete)
+      $ionicPopup.alert({
+        title: "Imagen enviada",
+        template: "Imagen enviadaa"
+      });
+    else
+      $ionicPopup.alert({
+        title: "Error",
+        template: "No se ha podido enviar la imagem"
       });
 
     $state.go('map');

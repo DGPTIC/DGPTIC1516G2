@@ -1,11 +1,46 @@
 <ion-view view-title="Perfil">
   <ion-content id="profile-bg">
     <div style="background-color: rgba(0,0,0,0);">
-        <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270"/>
+      <img id="profile-image" src="http://graph.facebook.com/{{user.id}}/picture?width=270&height=270" />
     </div>
-    <div id="profile-description" class="item item-bottom" align="center">
+    <div id="profile-description">
       <h2 id="profile-name">{{user.name}}</h2>
-      <br><button class="button button-positive" ng-click="logout()">Cerrar sesión</button>
+
+      <br>
+      <button class="button button-positive" ng-click="logout()">Cerrar sesión</button>
+
     </div>
+
+    <div id="profile-incident">
+      <ion-list>
+
+        <ion-item ng-repeat="incidencia in incidenciasUsuario">
+          <div class="item item-divider">
+            {{incidencia.Nombre_Organismo}}
+          </div>
+          <div class="item item-input-inset">
+            <div class="input-label"> Valoración </div>
+            <div class="input-label"> {{incidencia.Valoracion}} </div>
+
+          </div>
+          <div class="item item-input-inset">
+            <div class="input-label"> Descripción </div>
+            <div class="input-label"> {{incidencia.Descripcion}} </div>
+          </div>
+          <div class="item item-input-inset">
+            <div class="input-label"> Fecha actualización </div>
+
+            <div class="input-label"> {{incidencia.Fecha_actualizacion}} </div>
+
+          </div>
+        </ion-item>
+      </ion-list>
+    </div>
+
+
+
+
+
   </ion-content>
+
 </ion-view>
