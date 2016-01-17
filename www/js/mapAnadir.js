@@ -143,9 +143,6 @@ function iniciar (
   appGlobals.citizenRequestLayer.on("add-attachment-complete", function (eve) {
   	if(eve.error != null)
         angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(eve.success);
-
-    angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(true);
-
   });
 
   function initializeEventHandlers () {
@@ -255,7 +252,7 @@ function getValoresField (array) {
         html += "<div class=\"item item-input-inset\">";
         html += "<div class=\"input-label\">" + field.name + "</div>";
         html += "<label class=\"item-input-wrapper\">";
-        html += "<input id=\"" + name + "\"type=\"text\" placeholder=\"\">";
+        html += "<input id=\"" + name + "\"type=\"text\" value=\"\"placeholder=\"\">";
         html += "</label>";
         html += "</div>"
       }

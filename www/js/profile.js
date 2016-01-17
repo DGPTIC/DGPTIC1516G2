@@ -24,17 +24,11 @@ function getIncidenciasUsuario(scope) {
 			for(bar in entry.attributes) {
 				object[bar.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")] =  entry.attributes[bar];
 			}
-			console.log(valoresValoracion);
-			console.log( entry.attributes[bar]);
+			
 			object.Valoracion = getKeyForValue(valoresValoracion, entry.attributes["Valoración"]);
-			console.log(new Date(entry.attributes["Fecha_actualización"]).toISOString());
 			object.Fecha_actualizacion = new Date(entry.attributes["Fecha_actualización"]).toISOString().substr(0,10);;
 			scope.incidenciasUsuario.unshift(object);
 		});
-		scope.incidenciasUsuario.forEach(function(entry) {
-			console.log(entry);
-			console.log(entry.Valoracion);
-		})
 	}
 
 }

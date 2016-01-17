@@ -186,9 +186,10 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.logout = function() {
     loggedIn = false;
     userId = "";
+
     $state.go('map');
-    scopeMapController.source = "img/person.png";
     ngFB.logout().then(function () {
+      scopeMapController.source = "img/person.png";
       $ionicPopup.alert({
         title: "Cierre de sesión",
         template: "Se ha cerrado la sesión satisfactoriamente"
@@ -271,21 +272,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
         title: "Error",
         template: "No se ha podido enviar la notificación"
       });
-
+    document.getElementById("fileinput").value = "";
     $state.go('map');
   };
   $scope.mostrarImagenEnviada = function (editComplete) {
-    if (editComplete)
-      $ionicPopup.alert({
-        title: "Imagen enviada",
-        template: "Imagen enviadaa"
-      });
-    else
+    if (!editComplete)
       $ionicPopup.alert({
         title: "Error",
-        template: "No se ha podido enviar la imagem"
+        template: "No se ha podido enviar la imagen"
       });
-
     $state.go('map');
   };
 });

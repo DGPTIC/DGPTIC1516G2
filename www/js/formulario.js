@@ -29,7 +29,7 @@ function getAtributos () {
   ], function(lang) {
     var citizenRequestFeatureTemplate = getFeatureTemplateFromCodedValueByName();
     appGlobals.collectMode = false;
-    console.log(citizenRequestFeatureTemplate);
+    
     newAttributesG = lang.mixin({}, citizenRequestFeatureTemplate.prototype.attributes);
     newAttributesG.Valoración = valoresValoracion[document.getElementById("selectvaloracion").value];
     newAttributesG.Temática = document.getElementById("selecttematica").value;
