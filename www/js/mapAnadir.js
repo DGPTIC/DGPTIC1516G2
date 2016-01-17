@@ -140,6 +140,13 @@ function iniciar (
     angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(editComplete);
     appGlobals.lastMapPoint = null;
   });
+  appGlobals.citizenRequestLayer.on("add-attachment-complete", function (eve) {
+  	if(eve.error != null)
+        angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(eve.success);
+
+    angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(true);
+
+  });
 
   function initializeEventHandlers () {
     on(appGlobals.map, "load", function (event) {

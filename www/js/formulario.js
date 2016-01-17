@@ -16,7 +16,6 @@ function cargarFormulario() {
 // ----------------------------------------------------
 function getFeatureTemplateFromCodedValueByName () {
   var returnType = null;
-
   $.each(appGlobals.citizenRequestLayer.types, function(index, type) {
     returnType = type.templates[0];
   });
@@ -30,6 +29,7 @@ function getAtributos () {
   ], function(lang) {
     var citizenRequestFeatureTemplate = getFeatureTemplateFromCodedValueByName();
     appGlobals.collectMode = false;
+    console.log(citizenRequestFeatureTemplate);
     newAttributesG = lang.mixin({}, citizenRequestFeatureTemplate.prototype.attributes);
     newAttributesG.Valoración = valoresValoracion[document.getElementById("selectvaloracion").value];
     newAttributesG.Temática = document.getElementById("selecttematica").value;
@@ -54,9 +54,10 @@ function post () {
       Valoración: newAttributesG.Valoración,
       Descripción: newAttributesG.Descripción,
       Temática: newAttributesG.Temática,
+      Creator: userId,
       Nombre_Organismo: newAttributesG.Nombre_Organismo
     };
-
+    
     var incidentGraphic = new Graphic(appGlobals.lastMapPoint, null, incidentAttributes);
     try {
       if (navigator.onLine)

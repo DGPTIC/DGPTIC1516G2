@@ -12,8 +12,9 @@ function getIncidenciasUsuario(scope) {
 		queryTask = new QueryTask(appGlobals.citizenRequestLayerURL);
 		query = new Query();
 		query.returnGeometry = false;
-	  	query.outFields = ["Nombre_Organismo", "Valoración", "Fecha_actualización", "Fecha_creación"];
-	  	query.where = "Valoración > 2";
+	  	query.outFields = ["Nombre_Organismo", "Valoración", "Fecha_actualización", "Descripción"];
+	  	query.where = "Valoración > -4";
+	  	query.orderByFields = ["Fecha_actualización"];
 	  	queryTask.execute(query,showResults);
   	});
 
@@ -28,7 +29,7 @@ function getIncidenciasUsuario(scope) {
 			object.Valoracion = getKeyForValue(valoresValoracion, entry.attributes["Valoración"]);
 			console.log(new Date(entry.attributes["Fecha_actualización"]).toISOString());
 			object.Fecha_actualizacion = new Date(entry.attributes["Fecha_actualización"]).toISOString().substr(0,10);;
-			scope.incidenciasUsuario.push(object);
+			scope.incidenciasUsuario.unshift(object);
 		});
 		scope.incidenciasUsuario.forEach(function(entry) {
 			console.log(entry);
