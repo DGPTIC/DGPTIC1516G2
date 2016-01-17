@@ -21,7 +21,7 @@ function getKeyForValue(obj, value) {
 
 var loggedIn = false;
 var index = 0;
-
+var scopeMapController;
 angular.module('starter.controllers', ['ngOpenFB'])
 
 .controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
@@ -85,7 +85,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
 .controller('MapController', function ($scope, $state, $ionicPopup, ngFB) {
   loadMap();
   $scope.source = "img/person.png";
-
+  scopeMapController = $scope;
   $scope.goProfile = function () {
     if (loggedIn)
       $state.go('profile');
@@ -183,7 +183,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
   $scope.logout = function() {
     loggedIn = false;
     $state.go('map');
-
+    scopeMapController.source = "img/person.png";
     ngFB.logout().then(function () {
       $ionicPopup.alert({
         title: "Cierre de sesión",
