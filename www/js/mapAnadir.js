@@ -13,7 +13,7 @@ var appGlobals = {
   geoLocate: null
 };
 
-function loadMapAnadir (center, zoom) {
+function loadMapAnadir(center, zoom) {
   require([
     "dojo/_base/array",
     "dojo/_base/lang",
@@ -38,12 +38,12 @@ function loadMapAnadir (center, zoom) {
     "esri/symbols/SimpleMarkerSymbol",
     "esri/tasks/locator",
     "esri/tasks/query", "dojo/domReady!"
-  ], function (
+  ], function(
     array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
     HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
     SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query
   ) {
-    ready(function () {
+    ready(function() {
       parser.parse();
       esriConfig.defaults.io.proxyUrl = "/sproxy/";
 
@@ -57,7 +57,7 @@ function loadMapAnadir (center, zoom) {
         markerSymbol: sms
       }, domConstruct.create("div"));
 
-      on(infoWindowPopup, "show", function (event) {
+      on(infoWindowPopup, "show", function(event) {
         if ($("*.esriMobileNavigationItem.left > img[src]").exists())
           $("*.esriMobileNavigationItem.left > img").removeAttr("src");
         if ($("*.esriMobileNavigationItem.right > img[src]").exists)
@@ -76,15 +76,14 @@ function loadMapAnadir (center, zoom) {
         infoWindow: infoWindowPopup
       });
 
-
       iniciar(array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
-      HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
-      SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query);
+        HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
+        SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query);
     });
   });
 }
 
-function iniciar (
+function iniciar(
   array, lang, domConstruct, on, parser, query, ready, Color, esriConfig, AttributeInspector, Geocoder,
   HomeButton, LocateButton, PopupMobile, webMercatorUtils, Graphic, InfoTemplate, FeatureLayer, Map,
   SimpleLineSymbol, SimpleMarkerSymbol, Locator, Query
@@ -124,7 +123,7 @@ function iniciar (
 
   appGlobals.geoLocate.startup();
 
-  appGlobals.citizenRequestLayer.on("edits-complete", function (eve) {
+  appGlobals.citizenRequestLayer.on("edits-complete", function(eve) {
     var file = document.getElementById("fileinput");
 
     var editComplete = eve.adds.length != 0;
@@ -140,43 +139,42 @@ function iniciar (
     angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarIncidenciaEnviada(editComplete);
     appGlobals.lastMapPoint = null;
   });
-  appGlobals.citizenRequestLayer.on("add-attachment-complete", function (eve) {
-  	if(eve.error != null)
-        angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(eve.success);
+  appGlobals.citizenRequestLayer.on("add-attachment-complete", function(eve) {
+    if (eve.error != null)
+      angular.element(document.getElementById('ui-content-formulario2')).scope().mostrarImagenEnviada(eve.success);
   });
 
-  function initializeEventHandlers () {
-    on(appGlobals.map, "load", function (event) {
+  function initializeEventHandlers() {
+    on(appGlobals.map, "load", function(event) {
       appGlobals.map.infoWindow.resize(185, 100);
     });
 
-    on(appGlobals.citizenRequestLayer, "error", function (event) {
+    on(appGlobals.citizenRequestLayer, "error", function(event) {
       console.error("citizenRequestLayer failed to load.", JSON.stringify(event.error));
       $(".ui-loader").hide();
     });
 
-
-    on(appGlobals.citizenRequestLayer, "click", function (event) {
+    on(appGlobals.citizenRequestLayer, "click", function(event) {
       appGlobals.map.infoWindow.setFeatures([event.graphic]);
     });
 
     $(".basemapOption").click(swapBasemap);
 
-    $("#ui-features-panel").on("popupafteropen", function (event, ui) {
-      $("#ui-features-panel").on("popupafterclose", function (event, ui) {
+    $("#ui-features-panel").on("popupafteropen", function(event, ui) {
+      $("#ui-features-panel").on("popupafterclose", function(event, ui) {
         if (appGlobals.collectMode)
           $("#ui-collection-prompt").show();
         else
           $("#ui-collection-prompt").hide();
 
-        setTimeout(function () {
+        setTimeout(function() {
           $("#ui-collection-prompt").popup("open");
         }, 15);
       });
     });
 
-    $("#ui-collection-prompt").on("popupafteropen", function (event, ui) {
-      setTimeout(function () {
+    $("#ui-collection-prompt").on("popupafteropen", function(event, ui) {
+      setTimeout(function() {
         $("#ui-collection-prompt").popup("close");
       }, 1200);
     });
@@ -189,7 +187,7 @@ function iniciar (
   initializeEventHandlers();
   appGlobals.map.addLayers([appGlobals.citizenRequestLayer]);
 
-  function addMarker (mapPoint) {
+  function addMarker(mapPoint) {
     var newSymbol = new Graphic(mapPoint, new SimpleMarkerSymbol({
       "color": [255, 255, 255, 64],
       "size": 12,
@@ -212,54 +210,45 @@ function iniciar (
   }
 }
 
-function swapBasemap (event) {
+function swapBasemap(event) {
   var _basemapName = event.target.dataset.basemapname;
   appGlobals.map.setBasemap(_basemapName);
   $("#ui-settings-panel").panel("close");
 }
 
-
-function getValoresField (array) {
-  if (document.getElementById('selectvaloracion') != null)
-    return;
-
-  var divFormulario = document.createElement("div");
-  divFormulario.id = "ui-content-formulario";
-  var html = " <div class=\"list\">";
-
-  document.getElementById('hide').appendChild(divFormulario);
+function getValoresField(array) {
 
   if (appGlobals.citizenRequestLayer.hasOwnProperty("fields")) {
     var fieldsArray = appGlobals.citizenRequestLayer.fields;
-    array.forEach(fieldsArray, function (field, i) {
+    array.forEach(fieldsArray, function(field, i) {
       if (field.name != "Valoración" && field.name != "Descripción" && field.name != "Temática" && field.name != "Organismo" && field.name != "Nombre_Organismo")
         return;
-      var name = field.name.toLowerCase().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u");
+
       if (field.hasOwnProperty("domain")) {
-        html += "<label class=\"item item-input item-select\">";
-        html += "<div class=\"input-label\">" + field.name + "</div>"
-        html += "<select id=\"select" + name + "\" ng-model=\"select" + name + "\" ng-change=\"valueChange" + name + "(select" + name + ")\">";
+        var campoDiscreto = {
+          name: field.name,
+          selected: "",
+        };
+
+        campoDiscreto.value = [];
         if (field.domain.hasOwnProperty("codedValues")) {
 
           var codedValuesArray0 = field.domain.codedValues;
           array.forEach(codedValuesArray0, function(codedValue) {
-            html += "<option>" + codedValue.name + "</option>";
+            campoDiscreto.value.push(codedValue.name);
           });
         }
-        html += "</select>";
-        html += "</label>";
+
+        camposDiscretos[field.name] = campoDiscreto;
       } else {
-        html += "<div class=\"item item-input-inset\">";
-        html += "<div class=\"input-label\">" + field.name + "</div>";
-        html += "<label class=\"item-input-wrapper\">";
-        html += "<input id=\"" + name + "\"type=\"text\" value=\"\"placeholder=\"\">";
-        html += "</label>";
-        html += "</div>"
+        var campoContinuo = {
+          name: field.name,
+          value: ""
+        };
+        camposContinuos[field.name] = campoContinuo;
       }
 
     });
   }
 
-  html += "</div>"
-  divFormulario.innerHTML = html;
 }

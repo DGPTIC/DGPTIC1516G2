@@ -1,4 +1,5 @@
-var newAttributesG;
+var camposDiscretos = {};
+var camposContinuos = {};
 var datosIncidencia;
 var userId;
 var valoresValoracion = {
@@ -24,25 +25,24 @@ var index = 0;
 var scopeMapController;
 angular.module('starter.controllers', ['ngOpenFB'])
 
-.controller('SidemenuController', function ($scope, $ionicSideMenuDelegate) {
-  $scope.initialize = function () {
+.controller('SidemenuController', function($scope, $ionicSideMenuDelegate) {
+  $scope.initialize = function() {
     $ionicSideMenuDelegate.canDragContent(false);
   };
 
-  $scope.toggleLeft = function () {
+  $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
 })
 
-
-.controller('MenuController', function ($scope) {
+.controller('MenuController', function($scope) {
   $scope.publicoCheck = $scope.privadoCheck = false;
 
-  $scope.filter = function () {
+  $scope.filter = function() {
     var prefix = "";
     var rating = false;
 
-    function queryStr (b, value) {
+    function queryStr(b, value) {
       var str = "";
 
       if (b === true) {
@@ -55,12 +55,12 @@ angular.module('starter.controllers', ['ngOpenFB'])
     };
 
     var query = '(' + queryStr($scope.excelCheck, 3) +
-                      queryStr($scope.mbCheck,    2) +
-                      queryStr($scope.bCheck,     1) +
-                      queryStr($scope.rCheck,     0) +
-                      queryStr($scope.mCheck,    -1) +
-                      queryStr($scope.mmCheck,   -2) +
-                      queryStr($scope.pCheck,    -3) + ')';
+      queryStr($scope.mbCheck, 2) +
+      queryStr($scope.bCheck, 1) +
+      queryStr($scope.rCheck, 0) +
+      queryStr($scope.mCheck, -1) +
+      queryStr($scope.mmCheck, -2) +
+      queryStr($scope.pCheck, -3) + ')';
 
     if (!rating) query = '';
 
@@ -82,11 +82,11 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };
 })
 
-.controller('MapController', function ($scope, $state, $ionicPopup, ngFB) {
+.controller('MapController', function($scope, $state, $ionicPopup, ngFB) {
   loadMap();
   $scope.source = "img/person.png";
   scopeMapController = $scope;
-  $scope.goProfile = function () {
+  $scope.goProfile = function() {
     if (loggedIn)
       $state.go('profile');
     else {
@@ -95,39 +95,42 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   };
 
-  $scope.showLoginAlert = function () {
+  $scope.showLoginAlert = function() {
     $ionicPopup.show({
       title: 'Autenticación necesaria',
       template: 'No has accedido a través de tus redes sociales',
       scope: $scope,
-      buttons: [
-        {
-          text: 'Cancelar'
-        },
-        {
-          text: 'Login',
-          type: 'button-positive',
-          onTap: function () { $scope.fbLogin(); }
+      buttons: [{
+        text: 'Cancelar'
+      }, {
+        text: 'Login',
+        type: 'button-positive',
+        onTap: function() {
+          $scope.fbLogin();
         }
-      ]
+      }]
     });
   };
 
-  $scope.fbLogin = function () {
-    ngFB.login({scope: 'email,publish_actions'}).then(function (response) {
+  $scope.fbLogin = function() {
+    ngFB.login({
+      scope: 'email,publish_actions'
+    }).then(function(response) {
       if (response.status === 'connected') {
         loggedIn = true;
         ngFB.api({
           path: '/me',
-          params: {fields: 'id,name'}
+          params: {
+            fields: 'id,name'
+          }
         }).then(
-          function (user) {
-          	userId = user.id;
-          	$scope.user = user;
+          function(user) {
+            userId = user.id;
+            $scope.user = user;
             $scope.source = "http://graph.facebook.com/" + user.id + "/picture?width=270&height=270"
           },
-          function (error) {
-          	userId = "";
+          function(error) {
+            userId = "";
             $ionicPopup.alert({
               title: "Error al recuperar los datos",
               template: error.message
@@ -140,9 +143,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
           $state.go('add.map');
 
         //$scope.closeLogin();
-      }
-      else {
-      	userId = "";
+      } else {
+        userId = "";
         $ionicPopup.alert({
           title: "Inicio de sesión",
           template: "No se ha podido iniciar sesión"
@@ -153,7 +155,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     });
   };
 
-  $scope.addNotification = function () {
+  $scope.addNotification = function() {
     if (loggedIn)
       $state.go('add.map');
     else {
@@ -164,7 +166,8 @@ angular.module('starter.controllers', ['ngOpenFB'])
 
   $scope.cargarIncidencia = function(content) {
     datosIncidencia = content;
-  };
+  }
+
 
   $scope.cargarImagenesIncidencia = function(imagenes) {
     imagenesG = imagenes;
@@ -178,29 +181,45 @@ angular.module('starter.controllers', ['ngOpenFB'])
   };
 
   $scope.initIncidencia = function(content) {
-    cargarIncidencia();
+    
+    $scope.atributos = [];
+
+    for(bar in datosIncidencia) {
+      var element = {
+        name: bar,
+        value: datosIncidencia[bar]
+      };
+      if(element.name == "Descripción" ||
+         element.name == "Nombre_Organismo" ||
+         element.name == "Organismo" ||
+         element.name == "Temática")
+        $scope.atributos.push(element);
+      else if(element.name == "Valoración") {
+        element.value = getKeyForValue(valoresValoracion, element.value);
+        $scope.atributos.push(element);
+      }
+    }
   };
 })
 
-.controller('ProfileController', function ($scope, $state, $ionicPopup, ngFB) {
+.controller('ProfileController', function($scope, $state, $ionicPopup, ngFB) {
   $scope.logout = function() {
     loggedIn = false;
     userId = "";
-
+    scopeMapController.source = "img/person.png";
     $state.go('map');
-    ngFB.logout().then(function () {
-      scopeMapController.source = "img/person.png";
-      $ionicPopup.alert({
-        title: "Cierre de sesión",
-        template: "Se ha cerrado la sesión satisfactoriamente"
+    ngFB.logout().then(function() {
+        $ionicPopup.alert({
+          title: "Cierre de sesión",
+          template: "Se ha cerrado la sesión satisfactoriamente"
+        });
+      },
+      function() {
+        $ionicPopup.alert({
+          title: "Cierre de sesión",
+          template: "Un error ha ocurrido al iniciar sesión"
+        });
       });
-    },
-    function () {
-      $ionicPopup.alert({
-        title: "Cierre de sesión",
-        template: "Un error ha ocurrido al iniciar sesión"
-      });
-    });
   };
 
   $scope.loggedIn = true;
@@ -208,13 +227,15 @@ angular.module('starter.controllers', ['ngOpenFB'])
   getIncidenciasUsuario($scope);
   ngFB.api({
     path: '/me',
-    params: {fields: 'id,name'}
+    params: {
+      fields: 'id,name'
+    }
   }).then(
-    function (user) {
-		
-      	$scope.user = user;
+    function(user) {
+
+      $scope.user = user;
     },
-    function (error) {
+    function(error) {
       $ionicPopup.alert({
         title: "Error al recuperar los datos",
         template: error.message
@@ -223,15 +244,21 @@ angular.module('starter.controllers', ['ngOpenFB'])
   );
 })
 
-.controller('AddController', function ($scope, $state, $ionicHistory, $ionicPopup) {
-  $scope.init = function () {
+.controller('AddController', function($scope, $state, $ionicHistory, $ionicPopup) {
+  $scope.atributosDiscretos = {};
+  $scope.atributosContinuos = {};
+
+  $scope.atributosDiscretos = camposDiscretos;
+  $scope.atributosContinuos = camposContinuos;
+
+  $scope.init = function() {
     var center = [map.extent.getCenter().getLongitude(), map.extent.getCenter().getLatitude()];
     loadMapAnadir(center, map.getZoom());
   };
 
-  $scope.postForm = function () {
-    getAtributos();
-    post();
+  $scope.postForm = function() {
+    console.log($scope);
+    post($scope);
     //$scope.mostrarIncidenciaEnviada();
 
     // Deshabilitar el volver atrás y cambiar a la pantalla principal
@@ -241,7 +268,7 @@ angular.module('starter.controllers', ['ngOpenFB'])
     });
   };
 
-  $scope.goFormulario = function () {
+  $scope.goFormulario = function() {
     if (appGlobals.hayMapPoint == false)
       $scope.showAlert();
     else {
@@ -250,18 +277,18 @@ angular.module('starter.controllers', ['ngOpenFB'])
     }
   };
 
-  $scope.initFormulario = function () {
-    cargarFormulario();
+  $scope.initFormulario = function() {
+   
   };
 
-  $scope.showAlert = function () {
+  $scope.showAlert = function() {
     $ionicPopup.alert({
       title: 'Selecciona una ubicación!',
       template: 'No has seleccionado una ubicación. Por favor, pincha sobre el lugar de la notificación'
     });
   };
 
-  $scope.mostrarIncidenciaEnviada = function (editComplete) {
+  $scope.mostrarIncidenciaEnviada = function(editComplete) {
     if (editComplete)
       $ionicPopup.alert({
         title: "Notificación enviada",
@@ -275,7 +302,24 @@ angular.module('starter.controllers', ['ngOpenFB'])
     document.getElementById("fileinput").value = "";
     $state.go('map');
   };
-  $scope.mostrarImagenEnviada = function (editComplete) {
+
+  $scope.mostrarNoHayConexion = function() {
+    $ionicPopup.alert({
+      title: "Error",
+      template: "No se ha podido enviar la notificación. Comprueba tu conexión."
+    });
+    document.getElementById("fileinput").value = "";
+    $state.go('map');
+  };
+
+  $scope.mostrarFormularioIncompleto = function() {
+    $ionicPopup.alert({
+      title: "Campos vacíos.",
+      template: "Rellene los campos para poder enviar la notificación."
+    });
+  };
+
+  $scope.mostrarImagenEnviada = function(editComplete) {
     if (!editComplete)
       $ionicPopup.alert({
         title: "Error",
